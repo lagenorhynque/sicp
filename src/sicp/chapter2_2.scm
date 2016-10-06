@@ -29,7 +29,7 @@
         acc
         (rev (cdr coll)
              (cons (car coll) acc))))
-  (rev coll ()))
+  (rev coll '()))
 
 (define (deep-reverse coll)
   (define (rev coll acc)
@@ -37,7 +37,9 @@
           ((null? coll) acc)
           (else (rev (cdr coll)
                      (cons (deep-reverse (car coll)) acc)))))
-  (rev coll ()))
+  (rev coll '()))
+
+;; TODO: mapで書き換える
 
 (define x (list (list 1 2) (list 3 4)))
 (reverse x)
@@ -46,7 +48,7 @@
 ;; Exercise 2.28
 (define (fringe tree)
   (cond ((not (list? tree)) (list tree))
-        ((null? tree) ())
+        ((null? tree) '())
         (else (append (fringe (car tree))
                       (fringe (cadr tree))))))
 
@@ -54,4 +56,36 @@
 (fringe x)
 (fringe (list x x))
 
+;; TODO: consを使うように書き換え
+
 ;; Exercise 2.29
+(define (make-mobile left right)
+  (list left right))
+
+(define (make-branch length structure)
+  (list length structure))
+
+;; a.
+(define (left-branch mobile)
+  (car mobile))
+
+(define (right-branch mobile)
+  (cadr mobile))
+
+(define (branch-length branch)
+  (car branch))
+
+(define (branch-structure branch)
+  (cadr branch))
+
+;; b.
+(define (total-weight mobile)
+  (define (branch-weight branch)
+    (let ((s (branch-structure branch)))
+      (if (number? s)
+          s
+          (total-weight s))))
+  (+ (branch-weight (left-branch mobile))
+     (branch-weight (right-branch mobile))))
+
+;; c.
