@@ -95,6 +95,7 @@
      (branch-weight (right-branch mobile))))
 
 ;; c.
+;; TODO
 
 ;; Exercise 2.30
 ;; directly
@@ -121,6 +122,7 @@
        tree))
 
 ;; Exercise 2.32
+;; TODO
 (define (subsets s)
   (if (null? s)
       (list '())
@@ -128,11 +130,28 @@
         (append rest (map <??> rest)))))
 
 ;;; 2.2.3  Sequences as Conventional Interfaces
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
 
 ;;; Exercise 2.33
+(define (map p sequence)
+  (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
+
+(define (append seq1 seq2)
+  (accumulate cons seq2 seq1))
+
+(define (length sequence)
+  (accumulate (lambda (_ x) (+ 1 x)) 0 sequence))
 
 ;;; Exercise 2.34
+;; TODO
 
 ;;; Exercise 2.35
+;; TODO
+(define (count-leaves t)
+  (accumulate <??> <??> (map <??> <??>)))
 
 ;;; 2.2.4  Example: A Picture Language
