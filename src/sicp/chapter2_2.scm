@@ -1,3 +1,9 @@
+;;;; 2.2  Hierarchical Data and the Closure Property
+
+;;; 2.2.1  Representing Sequences
+
+;;; 2.2.2  Hierarchical Structures
+
 ;; Exercise 2.24
 (list 1 (list 2 (list 3 4)))
 ;=> (1 (2 (3 4)))
@@ -89,3 +95,44 @@
      (branch-weight (right-branch mobile))))
 
 ;; c.
+
+;; Exercise 2.30
+;; directly
+(define (square-tree tree)
+  (cond ((null? tree) '())
+        ((not (pair? tree)) (* tree tree))
+        (else (cons (square-tree (car tree))
+                    (square-tree (cdr tree))))))
+
+;; by using map and recursion
+(define (square-tree tree)
+  (map (lambda (t)
+         (if (pair? t)
+             (square-tree t)
+             (* t t)))
+       tree))
+
+;; Exercise 2.31
+(define (tree-map f tree)
+  (map (lambda (t)
+         (if (pair? t)
+             (tree-map f t)
+             (f t)))
+       tree))
+
+;; Exercise 2.32
+(define (subsets s)
+  (if (null? s)
+      (list '())
+      (let ((rest (subsets (cdr s))))
+        (append rest (map <??> rest)))))
+
+;;; 2.2.3  Sequences as Conventional Interfaces
+
+;;; Exercise 2.33
+
+;;; Exercise 2.34
+
+;;; Exercise 2.35
+
+;;; 2.2.4  Example: A Picture Language

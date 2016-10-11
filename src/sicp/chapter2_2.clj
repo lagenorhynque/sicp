@@ -1,5 +1,11 @@
 (ns sicp.chapter2-2)
 
+;;;; 2.2  Hierarchical Data and the Closure Property
+
+;;; 2.2.1  Representing Sequences
+
+;;; 2.2.2  Hierarchical Structures
+
 ;; Exercise 2.24
 (list 1 (list 2 (list 3 4)))
 ;=> (1 (2 (3 4)))
@@ -59,3 +65,7 @@
 (fringe (list x x))
 
 ;; Exercise 2.29
+
+;;; 2.2.3  Sequences as Conventional Interfaces
+
+;;; 2.2.4  Example: A Picture Language
