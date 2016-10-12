@@ -122,21 +122,21 @@
        tree))
 
 ;; Exercise 2.32
-;; TODO
 (define (subsets s)
   (if (null? s)
       (list '())
       (let ((rest (subsets (cdr s))))
-        (append rest (map <??> rest)))))
+        (append rest (map (lambda (x) (cons (car s) x)) rest)))))
 
 ;;; 2.2.3  Sequences as Conventional Interfaces
+
 (define (accumulate op initial sequence)
   (if (null? sequence)
       initial
       (op (car sequence)
           (accumulate op initial (cdr sequence)))))
 
-;;; Exercise 2.33
+;; Exercise 2.33
 (define (map p sequence)
   (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
 
@@ -146,12 +146,22 @@
 (define (length sequence)
   (accumulate (lambda (_ x) (+ 1 x)) 0 sequence))
 
-;;; Exercise 2.34
-;; TODO
+;; Exercise 2.34
+(define (horner-eval x coefficient-sequence)
+  (accumulate (lambda (this-coeff higher-terms)
+                (+ (* higher-terms x)
+                   this-coeff))
+              0
+              coefficient-sequence))
 
-;;; Exercise 2.35
-;; TODO
+;; Exercise 2.35
+(define (enumerate-tree tree)
+  (cond ((null? tree) '())
+        ((not (pair? tree)) (list tree))
+        (else (append (enumerate-tree (car tree))
+                      (enumerate-tree (cdr tree))))))
+
 (define (count-leaves t)
-  (accumulate <??> <??> (map <??> <??>)))
+  (accumulate + 0 (map (lambda (_) 1) (enumerate-tree t))))
 
 ;;; 2.2.4  Example: A Picture Language
