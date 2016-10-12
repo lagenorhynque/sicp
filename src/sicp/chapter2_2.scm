@@ -164,4 +164,40 @@
 (define (count-leaves t)
   (accumulate + 0 (map (lambda (_) 1) (enumerate-tree t))))
 
+;; Exercise 2.36
+(define (accumulate-n op init seqs)
+  (if (null? (car seqs))
+      '()
+      (cons (accumulate op init (map car seqs))
+            (accumulate-n op init (map cdr seqs)))))
+
+;; Exercise 2.37
+(define (dot-product v w)
+  (accumulate + 0 (map * v w)))
+
+;; TODO
+(define (matrix-*-vector m v)
+  (map <??> m))
+
+;; TODO
+(define (transpose mat)
+  (accumulate-n <??> <??> mat))
+
+;; TODO
+(define (matrix-*-matrix m n)
+  (let ((cols (transpose n)))
+    (map <??> m)))
+
+;; Exercise 2.38
+
+;; Exercise 2.39
+
+;; Exercise 2.40
+
+;; Exercise 2.41
+
+;; Exercise 2.42
+
+;; Exercise 2.43
+
 ;;; 2.2.4  Example: A Picture Language
