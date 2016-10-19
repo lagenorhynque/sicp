@@ -213,6 +213,39 @@
   (fold-left (lambda (x y) (cons y x)) '() sequence))
 
 ;; Exercise 2.40
+(define (enumerate-interval low high)
+  (if (> low high)
+      '()
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(define (flatmap proc seq)
+  (accumulate append '() (map proc seq)))
+
+(define (unique-pairs n)
+  (flatmap
+   (lambda (i)
+     (map (lambda (j)
+            (list i j))
+          (enumerate-interval 1 (- i 1))))
+   (enumerate-interval 2 n)))
+
+(define (prime? n)
+  (define (divides? a b)
+    (= (remainder b a) 0))
+  (define (find-divisor n test-divisor)
+    (cond ((> (* test-divisor test-divisor) n) n)
+            ((divides? test-divisor n) test-divisor)
+            (else (find-divisor n (+ test-divisor 1)))))
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+  (= n (smallest-divisor n)))
+
+(define (prime-sum-pairs n)
+  (define (prime-sum? pair)
+    (prime? (+ (car pair) (cadr pair))))
+  (define (make-pair-sum pair)
+    (list (car pair) (cadr pair) (+ (car pair) (cadr pair))))
+  (map make-pair-sum (filter prime-sum? (unique-pairs n))))
 
 ;; Exercise 2.41
 
