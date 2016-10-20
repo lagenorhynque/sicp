@@ -48,9 +48,9 @@
                            (cons (deep-reverse (first coll)) acc))))]
     (rev coll [])))
 
-(def x (list (list 1 2) (list 3 4)))
-(reverse' x)
-(deep-reverse x)
+(def x' (list (list 1 2) (list 3 4)))
+(reverse' x')
+(deep-reverse x')
 
 ;; Exercise 2.28
 (defn fringe [tree]
@@ -60,9 +60,9 @@
     :else (concat (fringe (first tree))
                   (fringe (fnext tree)))))
 
-(def x (list (list 1 2) (list 3 4)))
-(fringe x)
-(fringe (list x x))
+(def x'' (list (list 1 2) (list 3 4)))
+(fringe x'')
+(fringe (list x'' x''))
 
 ;; Exercise 2.29
 

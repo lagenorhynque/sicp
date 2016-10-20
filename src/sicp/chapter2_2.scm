@@ -1,3 +1,5 @@
+#lang sicp
+
 ;;;; 2.2  Hierarchical Data and the Closure Property
 
 ;;; 2.2.1  Representing Sequences
@@ -19,7 +21,12 @@
 (define x (list 1 2 3))
 (define y (list 4 5 6))
 
-(concat x y)
+(define (append list1 list2)
+  (if (null? list1)
+      list2
+      (cons (car list1) (append (cdr list1) list2))))
+
+(append x y)
 ;=> (1 2 3 4 5 6)
 
 (cons x y)
@@ -47,9 +54,9 @@
 
 ;; TODO: mapで書き換える
 
-(define x (list (list 1 2) (list 3 4)))
-(reverse x)
-(deep-reverse x)
+(define x* (list (list 1 2) (list 3 4)))
+(reverse x*)
+(deep-reverse x*)
 
 ;; Exercise 2.28
 (define (fringe tree)
@@ -58,9 +65,9 @@
         (else (append (fringe (car tree))
                       (fringe (cadr tree))))))
 
-(define x (list (list 1 2) (list 3 4)))
-(fringe x)
-(fringe (list x x))
+(define x** (list (list 1 2) (list 3 4)))
+(fringe x**)
+(fringe (list x** x**))
 
 ;; TODO: consを使うように書き換え
 
@@ -106,7 +113,7 @@
                     (square-tree (cdr tree))))))
 
 ;; by using map and recursion
-(define (square-tree tree)
+(define (square-tree* tree)
   (map (lambda (t)
          (if (pair? t)
              (square-tree t)
@@ -140,7 +147,7 @@
 (define (map p sequence)
   (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
 
-(define (append seq1 seq2)
+(define (append* seq1 seq2)
   (accumulate cons seq2 seq1))
 
 (define (length sequence)
@@ -206,10 +213,10 @@
 ;=> (((() 1) 2) 3)
 
 ;; Exercise 2.39
-(define (reverse sequence)
+(define (reverse* sequence)
   (fold-right (lambda (x y) (append y (list x))) '() sequence))
 
-(define (reverse sequence)
+(define (reverse** sequence)
   (fold-left (lambda (x y) (cons y x)) '() sequence))
 
 ;; Exercise 2.40
@@ -239,6 +246,13 @@
   (define (smallest-divisor n)
     (find-divisor n 2))
   (= n (smallest-divisor n)))
+
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
 
 (define (prime-sum-pairs n)
   (define (prime-sum? pair)

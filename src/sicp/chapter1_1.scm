@@ -1,3 +1,5 @@
+#lang sicp
+
 ;;;; 1.1  The Elements of Programming
 
 ;;; 1.1.1  Expressions
