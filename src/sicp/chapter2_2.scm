@@ -144,7 +144,7 @@
           (accumulate op initial (cdr sequence)))))
 
 ;; Exercise 2.33
-(define (map p sequence)
+(define (map* p sequence)
   (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
 
 (define (append* seq1 seq2)
@@ -248,7 +248,7 @@
   (= n (smallest-divisor n)))
 
 (define (filter predicate sequence)
-  (cond ((null? sequence) nil)
+  (cond ((null? sequence) '())
         ((predicate (car sequence))
          (cons (car sequence)
                (filter predicate (cdr sequence))))
@@ -262,9 +262,121 @@
   (map make-pair-sum (filter prime-sum? (unique-pairs n))))
 
 ;; Exercise 2.41
+;; TODO
 
 ;; Exercise 2.42
+;; TODO
+;; (define (queens board-size)
+;;   (define (queen-cols k)
+;;     (if (= k 0)
+;;         (list empty-board)
+;;         (filter
+;;          (lambda (positions) (safe? k positions))
+;;          (flatmap
+;;           (lambda (rest-of-queens)
+;;             (map (lambda (new-row)
+;;                    (adjoin-position new-row k rest-of-queens))
+;;                  (enumerate-interval 1 board-size)))
+;;           (queen-cols (- k 1))))))
+;;   (queen-cols board-size))
 
 ;; Exercise 2.43
+;; TODO
 
 ;;; 2.2.4  Example: A Picture Language
+
+(#%require sicp-pict)
+
+;; Exercise 2.44
+(define (right-split painter n)
+  (if (= n 0)
+      painter
+      (let ((smaller (right-split painter (- n 1))))
+        (beside painter (below smaller smaller)))))
+
+(define (up-split painter n)
+  (if (= n 0)
+      painter
+      (let ((smaller (up-split painter (- n 1))))
+        (below painter (beside smaller smaller)))))
+
+(define (corner-split painter n)
+  (if (= n 0)
+      painter
+      (let ((up (up-split painter (- n 1)))
+            (right (right-split painter (- n 1))))
+        (let ((top-left (beside up up))
+              (bottom-right (below right right))
+              (corner (corner-split painter (- n 1))))
+          (beside (below painter top-left)
+                  (below bottom-right corner))))))
+
+;; Exercise 2.45
+(define (split f g)
+  (define (sp painter n)
+    (if (= n 0)
+        painter
+        (let ((smaller (sp painter (- n 1))))
+          (f painter (g smaller smaller)))))
+  sp)
+
+(define right-split* (split beside below))
+(define up-split* (split below beside))
+
+;; Exercise 2.46
+(define (make-vect x y)
+  (list x y))
+
+(define (xcor-vect v)
+  (car v))
+
+(define (ycor-vect v)
+  (cadr v))
+
+(define (add-vect v w)
+  (map + v w))
+
+(define (sub-vect v w)
+  (map - v w))
+
+(define (scale-vect k v)
+  (map (lambda (x) (* k x)) v))
+
+;; Exercise 2.47
+(define (make-frame origin edge1 edge2)
+  (list origin edge1 edge2))
+
+(define (origin-frame f)
+  (car f))
+
+(define (edge1-frame f)
+  (cadr f))
+
+(define (edge2-frame f)
+  (caddr f))
+
+(define (make-frame* origin edge1 edge2)
+  (cons origin (cons edge1 edge2)))
+
+(define (origin-frame* f)
+  (car f))
+
+(define (edge1-frame* f)
+  (cadr f))
+
+(define (edge2-frame* f)
+  (cddr f))
+
+(define (frame-coord-map frame)
+  (lambda (v)
+    (add-vect
+     (origin-frame frame)
+     (add-vect (scale-vect (xcor-vect v)
+                           (edge1-frame frame))
+               (scale-vect (ycor-vect v)
+                           (edge2-frame frame))))))
+
+;; Exercise 2.48
+
+
+;; Exercise 2.49
