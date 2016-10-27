@@ -265,20 +265,46 @@
 ;; TODO
 
 ;; Exercise 2.42
-;; TODO
-;; (define (queens board-size)
-;;   (define (queen-cols k)
-;;     (if (= k 0)
-;;         (list empty-board)
-;;         (filter
-;;          (lambda (positions) (safe? k positions))
-;;          (flatmap
-;;           (lambda (rest-of-queens)
-;;             (map (lambda (new-row)
-;;                    (adjoin-position new-row k rest-of-queens))
-;;                  (enumerate-interval 1 board-size)))
-;;           (queen-cols (- k 1))))))
-;;   (queen-cols board-size))
+(define (any? p coll)
+  (accumulate (lambda (x acc)
+                (or (p x) acc))
+              false
+              coll))
+
+;; FIXME
+(define (queens board-size)
+  (define (pos r c)
+    (list r c))
+  (define (r-pos p)
+    (car p))
+  (define (c-pos p)
+    (cadr p))
+  (define empty-board '())
+  (define (safe? k positions)
+    (let ((k-position (car positions))
+          (rest-positions (cdr positions)))
+      (let ((k-r (r-pos k-position))
+            (k-c (c-pos k-position)))
+        (not (any? (lambda (position)
+                     (let ((r (r-pos position))
+                           (c (c-pos position)))
+                       (or (= k-c c)
+                           (= (+ (* k-r r) (* k-c c)) -1))))
+                   rest-positions)))))
+  (define (adjoin-position new-row k rest-of-queens)
+    (cons (pos new-row k) rest-of-queens))
+  (define (queen-cols k)
+    (if (= k 0)
+        (list empty-board)
+        (filter
+         (lambda (positions) (safe? k positions))
+         (flatmap
+          (lambda (rest-of-queens)
+            (map (lambda (new-row)
+                   (adjoin-position new-row k rest-of-queens))
+                 (enumerate-interval 1 board-size)))
+          (queen-cols (- k 1))))))
+  (queen-cols board-size))
 
 ;; Exercise 2.43
 ;; TODO
