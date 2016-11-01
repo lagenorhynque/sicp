@@ -68,4 +68,41 @@
 
 ;;; 2.2.3  Sequences as Conventional Interfaces
 
+;; Exercise 2.42
+(defn queens [board-size]
+  (let [pos (fn [r c]
+              [r c])
+        row-pos (fn [p]
+                  (first p))
+        column-pos (fn [p]
+                     (second p))
+        empty-board []
+        safe? (fn [k positions]
+                (let [[k-position & rest-positions] positions
+                      k-row (row-pos k-position)
+                      k-column (column-pos k-position)]
+                  (not-any? (fn [position]
+                              (let [row (row-pos position)
+                                    column (column-pos position)
+                                    row-diff (- k-row row)
+                                    column-diff (- k-column column)]
+                                (or (zero? row-diff)
+                                    (zero? column-diff)
+                                    (= (Math/abs row-diff) (Math/abs column-diff)))))
+                            rest-positions)))
+        adjoin-position (fn [new-row k rest-of-queens]
+                          (cons (pos new-row k) rest-of-queens))
+        queen-cols (fn queen-cols [k]
+                     (if (zero? k)
+                       [empty-board]
+                       (filter
+                        (fn [positions] (safe? k positions))
+                        (mapcat
+                         (fn [rest-of-queens]
+                           (map (fn [new-row]
+                                  (adjoin-position new-row k rest-of-queens))
+                                (range 1 (inc board-size))))
+                         (queen-cols (dec k))))))]
+    (queen-cols board-size)))
+
 ;;; 2.2.4  Example: A Picture Language
