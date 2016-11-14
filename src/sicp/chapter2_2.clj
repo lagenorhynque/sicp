@@ -4,6 +4,38 @@
 
 ;;; 2.2.1  Representing Sequences
 
+;; Exercise 2.17
+(defn last-pair [coll]
+  (if-let [r (next coll)]
+    (recur r)
+    (first coll)))
+
+(last-pair (list 23 72 149 34))
+
+;; Exercise 2.18
+(defn reverse' [coll]
+  (letfn [(rev [coll acc]
+            (if (empty? coll)
+              acc
+              (recur (rest coll)
+                     (cons (first coll) acc))))]
+    (rev coll [])))
+
+(reverse' (list 1 4 9 16 25))
+
+;; Exercise 2.19
+(def us-coins (list 50 25 10 5 1))
+(def uk-coins (list 100 50 20 10 5 2 1 0.5))
+
+
+;; Exercise 2.20
+
+;; Exercise 2.21
+
+;; Exercise 2.22
+
+;; Exercise 2.23
+
 ;;; 2.2.2  Hierarchical Structures
 
 ;; Exercise 2.24
@@ -31,14 +63,6 @@
 ;=> ((1 2 3) (4 5 6))
 
 ;; Exercise 2.27
-(defn reverse' [coll]
-  (letfn [(rev [coll acc]
-            (if (empty? coll)
-              acc
-              (recur (rest coll)
-                     (cons (first coll) acc))))]
-    (rev coll [])))
-
 (defn deep-reverse [coll]
   (letfn [(rev [coll acc]
             (cond
