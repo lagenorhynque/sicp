@@ -26,15 +26,19 @@
 ;; Exercise 2.19
 (def us-coins (list 50 25 10 5 1))
 (def uk-coins (list 100 50 20 10 5 2 1 0.5))
-
+;; TODO
 
 ;; Exercise 2.20
+;; TODO
 
 ;; Exercise 2.21
+;; TODO
 
 ;; Exercise 2.22
+;; TODO
 
 ;; Exercise 2.23
+;; TODO
 
 ;;; 2.2.2  Hierarchical Structures
 
@@ -89,8 +93,45 @@
 (fringe (list x'' x''))
 
 ;; Exercise 2.29
+;; TODO
+
+;; Exercise 2.30
+;; TODO
+
+;; Exercise 2.31
+;; TODO
+
+;; Exercise 2.32
+;; TODO
 
 ;;; 2.2.3  Sequences as Conventional Interfaces
+
+;; Exercise 2.33
+;; TODO
+
+;; Exercise 2.34
+;; TODO
+
+;; Exercise 2.35
+;; TODO
+
+;; Exercise 2.36
+;; TODO
+
+;; Exercise 2.37
+;; TODO
+
+;; Exercise 2.38
+;; TODO
+
+;; Exercise 2.39
+;; TODO
+
+;; Exercise 2.40
+;; TODO
+
+;; Exercise 2.41
+;; TODO
 
 ;; Exercise 2.42
 (defn queens [board-size]
@@ -129,4 +170,34 @@
                          (queen-cols (dec k))))))]
     (queen-cols board-size)))
 
+;; Exercise 2.43
+;; TODO
+
 ;;; 2.2.4  Example: A Picture Language
+
+;; Exercise 2.44
+;; TODO
+
+;; Exercise 2.45
+;; TODO
+
+;; Exercise 2.46
+;; TODO
+
+;; Exercise 2.47
+;; TODO
+
+;; Exercise 2.48
+;; TODO
+
+;; Exercise 2.49
+;; TODO
+
+;; Exercise 2.50
+;; TODO
+
+;; Exercise 2.51
+;; TODO
+
+;; Exercise 2.52
+;; TODO
