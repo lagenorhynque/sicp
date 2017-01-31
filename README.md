@@ -1,4 +1,4 @@
 sicp
 ====
 
-[Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sicp/full-text/book/book.html)の練習問題解答。
+Solutions to the exercises from [*Structure and Interpretation of Computer Programs (SICP)*](https://mitpress.mit.edu/sicp/full-text/book/book.html).
