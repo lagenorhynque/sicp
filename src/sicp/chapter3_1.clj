@@ -40,3 +40,20 @@
                      (throw (Exception. (str "Unknown request -- make-account "
                                              m)))))]
     dispatch))
+
+;; Exercise 3.1
+(defn make-accumulator [init]
+  (let [sum (atom init)]
+    (fn [n]
+      (swap! sum + n))))
+
+
+;; Exercise 3.2
+(defn make-monitored [f]
+  (let [cnt (atom 0)]
+    (fn [x]
+      (case x
+        :how-many-calls? @cnt
+        :reset-count (reset! cnt 0)
+        (do (swap! cnt inc)
+            (f x))))))
