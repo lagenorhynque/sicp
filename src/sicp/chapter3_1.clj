@@ -114,10 +114,34 @@
 
 ;;; 3.1.2  The Benefits of Introducing Assignment
 
-;; Exercise 3.5
+(defn monte-carlo [trials experiment]
+  (letfn [(iter [trials-remaining trials-passed]
+            (cond
+              (zero? trials-remaining) (/ trials-passed trials)
+              (experiment) (recur (dec trials-remaining)
+                                  (inc trials-passed))
+              :else (recur (dec trials-remaining)
+                           trials-passed)))]
+    (iter trials 0)))
 
+;; Exercise 3.5
+(defn random-in-range [low high]
+  (let [ran (- high low)]
+    (+ low (rand ran))))
+
+(defn estimate-integral [x1 y1 x2 y2 trials]
+  (letfn [(test []
+            (let [r (/ (- x2 x1) 2)
+                  cx (/ (+ x1 x2) 2)
+                  cy (/ (+ y1 y2) 2)
+                  x (random-in-range x1 x2)
+                  y (random-in-range y1 y2)]
+              (<= (+ (Math/pow (- x cx) 2)
+                     (Math/pow (- y cy) 2))
+                  (Math/pow r 2))))]
+    (double (* 4 (monte-carlo trials test)))))
 
 ;; Exercise 3.6
-
+;; TODO
 
 ;;; 3.1.3  The Costs of Introducing Assignment
