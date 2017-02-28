@@ -129,17 +129,18 @@
   (let [ran (- high low)]
     (+ low (rand ran))))
 
-(defn estimate-integral [x1 y1 x2 y2 trials]
-  (letfn [(test []
-            (let [r (/ (- x2 x1) 2)
-                  cx (/ (+ x1 x2) 2)
-                  cy (/ (+ y1 y2) 2)
-                  x (random-in-range x1 x2)
-                  y (random-in-range y1 y2)]
-              (<= (+ (Math/pow (- x cx) 2)
-                     (Math/pow (- y cy) 2))
-                  (Math/pow r 2))))]
-    (double (* 4 (monte-carlo trials test)))))
+(defn estimate-integral [p x1 y1 x2 y2 trials]
+  (monte-carlo trials #(p (random-in-range x1 x2)
+                          (random-in-range y1 y2))))
+
+(defn estimate-pi [trials]
+  (letfn [(p [x y]
+            (<= (+ (Math/pow (- x 5) 2)
+                   (Math/pow (- y 7) 2))
+                (Math/pow 3 2)))]
+    (-> (estimate-integral p 2 4 8 10 trials)
+        (* 4)
+        double)))
 
 ;; Exercise 3.6
 ;; TODO
