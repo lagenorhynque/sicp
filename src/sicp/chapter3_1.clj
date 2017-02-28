@@ -1,4 +1,5 @@
-(ns sicp.chapter3-1)
+(ns sicp.chapter3-1
+  (:require [clojure.math.numeric-tower :as math]))
 
 ;;;; 3.1  Assignment and Local State
 
@@ -124,6 +125,14 @@
                            trials-passed)))]
     (iter trials 0)))
 
+(defn cesaro-test []
+  (= (math/gcd (rand-int 1000) (rand-int 1000)) 1))
+
+(defn estimate-pi [trials]
+  (->> (monte-carlo trials cesaro-test)
+       (/ 6)
+       math/sqrt))
+
 ;; Exercise 3.5
 (defn random-in-range [low high]
   (let [ran (- high low)]
@@ -133,14 +142,14 @@
   (monte-carlo trials #(p (random-in-range x1 x2)
                           (random-in-range y1 y2))))
 
-(defn estimate-pi [trials]
+(defn estimate-pi' [trials]
   (letfn [(p [x y]
-            (<= (+ (Math/pow (- x 5) 2)
-                   (Math/pow (- y 7) 2))
-                (Math/pow 3 2)))]
-    (-> (estimate-integral p 2 4 8 10 trials)
-        (* 4)
-        double)))
+            (<= (+ (math/expt (- x 5) 2)
+                   (math/expt (- y 7) 2))
+                (math/expt 3 2)))]
+    (->> (estimate-integral p 2 4 8 10 trials)
+         (* 4)
+         double)))
 
 ;; Exercise 3.6
 ;; TODO
