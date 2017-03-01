@@ -148,12 +148,12 @@
 
 ;; Exercise 3.6
 ;; dummy implementation
-(def random-init (atom 0))
+(def random-init 0)
 (defn rand-update [n]
   (inc n))
 
 (def rand'
-  (let [r random-init]
+  (let [r (atom random-init)]
     (fn [m]
       (case m
         :generate (swap! r rand-update)

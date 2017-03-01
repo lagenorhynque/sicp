@@ -37,6 +37,5 @@
 
 ;; Exercise 3.6
 (deftest rand'-test
-  (let [init @random-init]
-    (is (= (rand-update init) (rand' :generate)))
-    (is (= 10 ((rand' :reset) 10)))))
+  (is (= (rand-update random-init) (rand' :generate)))
+  (is (= 10 ((rand' :reset) 10))))
