@@ -68,18 +68,15 @@
                      "Insufficient funds"))
         deposit (fn [amount]
                   (swap! balance + amount))
-        exec-if-correct (fn [pass f]
-                          (fn [amount]
-                            (if (= pass password)
-                              (f amount)
-                              "Incorrect password")))
         dispatch (fn [pass m]
-                   (case m
-                     :withdraw (exec-if-correct pass withdraw)
-                     :deposit (exec-if-correct pass deposit)
-                     (throw (IllegalArgumentException.
-                             (str "Unknown request -- make-account "
-                                  m)))))]
+                   (if (= pass password)
+                     (case m
+                       :withdraw withdraw
+                       :deposit deposit
+                       (throw (IllegalArgumentException.
+                               (str "Unknown request -- make-account "
+                                    m))))
+                     (fn [_] "Incorrect password")))]
     dispatch))
 
 ;; Exercise 3.4
@@ -95,22 +92,20 @@
         deposit (fn [amount]
                   (swap! balance + amount))
         incorrect-cnt (atom 0)
-        exec-if-correct (fn [pass f]
-                          (fn [amount]
-                            (if (= pass password)
-                              (do (reset! incorrect-cnt 0)
-                                  (f amount))
-                              (do (swap! incorrect-cnt inc)
-                                  (if (> @incorrect-cnt 7)
-                                    (call-the-cops)
-                                    "Incorrect password")))))
         dispatch (fn [pass m]
-                   (case m
-                     :withdraw (exec-if-correct pass withdraw)
-                     :deposit (exec-if-correct pass deposit)
-                     (throw (IllegalArgumentException.
-                             (str "Unknown request -- make-account "
-                                  m)))))]
+                   (if (= pass password)
+                     (do (reset! incorrect-cnt 0)
+                         (case m
+                           :withdraw withdraw
+                           :deposit deposit
+                           (throw (IllegalArgumentException.
+                                   (str "Unknown request -- make-account "
+                                        m)))))
+                     (do (swap! incorrect-cnt inc)
+                         (fn [_]
+                           (if (> @incorrect-cnt 7)
+                             (call-the-cops)
+                             "Incorrect password")))))]
     dispatch))
 
 ;;; 3.1.2  The Benefits of Introducing Assignment
@@ -152,6 +147,7 @@
          double)))
 
 ;; Exercise 3.6
+;; dummy implementation
 (def random-init (atom 0))
 (defn rand-update [n]
   (inc n))
