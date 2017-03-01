@@ -144,10 +144,10 @@
 
 (defn estimate-pi' [trials]
   (letfn [(p [x y]
-            (<= (+ (math/expt (- x 5) 2)
-                   (math/expt (- y 7) 2))
-                (math/expt 3 2)))]
-    (->> (estimate-integral p 2 4 8 10 trials)
+            (<= (+ (math/expt x 2)
+                   (math/expt y 2))
+                1))]
+    (->> (estimate-integral p -1 -1 1 1 trials)
          (* 4)
          double)))
 
