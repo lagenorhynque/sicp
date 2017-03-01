@@ -156,13 +156,14 @@
 (defn rand-update [n]
   (inc n))
 
-(defn rand' [m]
+(def rand'
   (let [r random-init]
-    (case m
-      :generate (swap! r rand-update)
-      :reset #(reset! r %)
-      (throw (IllegalArgumentException.
-              (str "Unknown request -- rand' "
-                   m))))))
+    (fn [m]
+      (case m
+        :generate (swap! r rand-update)
+        :reset #(reset! r %)
+        (throw (IllegalArgumentException.
+                (str "Unknown request -- rand' "
+                     m)))))))
 
 ;;; 3.1.3  The Costs of Introducing Assignment
