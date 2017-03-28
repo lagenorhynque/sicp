@@ -19,6 +19,7 @@
   {:label (str/join "&#92;n&#92;n" xs)})
 
 ;; recursive version
+;; cf. resources/public/img/chapter3_2/exercise3-9_recursive.png
 (def factorial-recursive
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -63,6 +64,7 @@
       d/dot))
 
 ;; iterative version
+;; cf. resources/public/img/chapter3_2/exercise3-9_iterative.png
 (def factorial-iterative
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
