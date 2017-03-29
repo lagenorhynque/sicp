@@ -9,20 +9,21 @@
 ;;; 3.2.2  Applying Simple Procedures
 
 ;; Exercise 3.9
+(def ^:dynamic *newline-char*
+  "&#92;n")
+
 (defn strip-margin
   ([s]
    (strip-margin s "\\|"))
   ([s delimiter]
-   (->> s
-        (str/split-lines)
-        (map #(str/replace-first
-               %
-               (re-pattern (str "^\\s*" delimiter))
-               ""))
-        (str/join "&#92;n"))))
+   (let [p (re-pattern (str "^\\s*" delimiter))]
+     (->> s
+          (str/split-lines)
+          (map #(str/replace-first % p ""))
+          (str/join *newline-char*)))))
 
 (defn create-node [& xs]
-  {:label (str/join "&#92;n&#92;n" xs)})
+  {:label (str/join (str *newline-char* *newline-char*) xs)})
 
 ;; recursive version
 ;; cf. resources/public/img/chapter3_2/exercise3-9_recursive.png
