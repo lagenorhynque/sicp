@@ -2,6 +2,12 @@
   (:require [clojure.string :as str]
             [dorothy.core :as d]))
 
+;;;; 3.2  The Environment Model of Evaluation
+
+;;; 3.2.1  The Rules for Evaluation
+
+;;; 3.2.2  Applying Simple Procedures
+
 ;; Exercise 3.9
 (defn strip-margin
   ([s]
@@ -134,3 +140,12 @@
        [:c8 :e8]]
       d/digraph
       d/dot))
+
+;;; 3.2.3  Frames as the Repository of Local State
+
+;; Exercise 3.10
+;; TODO
+
+;;; 3.2.4  Internal Definitions
+
+;; Exercise 3.11
