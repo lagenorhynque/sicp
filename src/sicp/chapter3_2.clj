@@ -40,10 +40,9 @@
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(define (factorial n)
-                                 |  (if (= n 1)
-                                 |      1
-                                 |      (* n (factorial (- n 1)))))")]
+                 #sicp/s "(if (= n 1)
+                         |    1
+                         |    (* n (factorial (- n 1))))")]
          :c1 :c2 :c3 :c4 :c5 :c6])
 
        [:e1 :g]
