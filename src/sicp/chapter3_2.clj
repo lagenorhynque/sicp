@@ -145,6 +145,7 @@
 ;;; 3.2.3  Frames as the Repository of Local State
 
 ;; Exercise 3.10
+;; cf. resources/public/img/chapter3_2/exercise3-10_1_define-w1.png
 (def make-withdraw-define-w1
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -160,6 +161,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_2/exercise3-10_2_w1.png
 (def make-withdraw-w1
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -190,6 +192,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_2/exercise3-10_3_define-w2.png
 (def make-withdraw-define-w2
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -214,6 +217,7 @@
 ;;; 3.2.4  Internal Definitions
 
 ;; Exercise 3.11
+;; cf. resources/public/img/chapter3_2/exercise3-11_1_define-acc.png
 (def make-account-define-acc
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -229,6 +233,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_2/exercise3-11_2_acc-deposit.png
 (def make-account-acc-deposit
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -269,6 +274,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_2/exercise3-11_3_acc-withdraw.png
 (def make-account-acc-withdraw
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -310,6 +316,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_2/exercise3-11_4_define-acc2.png
 (def make-account-define-acc2
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"

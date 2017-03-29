@@ -7,6 +7,7 @@
 ;;; 3.3.1  Mutable List Structure
 
 ;; Exercise 3.12
+;; cf. resources/public/img/chapter3_3/exercise3-12_1_define-x.png
 (def append-define-x
   (-> [(d/node-attrs {:shape :record})
        [:c1 (create-node "<car>|<cdr>")]
@@ -26,6 +27,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_3/exercise3-12_2_define-y.png
 (def append-define-y
   (-> [(d/node-attrs {:shape :record})
        [:c1 (create-node "<car>|<cdr>")]
@@ -55,6 +57,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_3/exercise3-12_3_define-z.png
 (def append-define-z
   (-> [(d/node-attrs {:shape :record})
        [:c1 (create-node "<car>|<cdr>")]
@@ -93,6 +96,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_3/exercise3-12_4_define-w.png
 (def append-define-w
   (-> [(d/node-attrs {:shape :record})
        [:c1 (create-node "<car>|<cdr>")]
@@ -134,6 +138,15 @@
        [:s4 :c1]]
       d/digraph
       d/dot))
+
+;; Exercise 3.13
+;; TODO
+
+;; Exercise 3.14
+;; TODO
+
+;; Exercise 3.15
+;; TODO
 
 ;;; 3.3.2  Representing Queues
 
