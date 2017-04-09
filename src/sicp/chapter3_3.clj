@@ -355,6 +355,132 @@
       d/digraph
       d/dot))
 
+;; Exercise 3.16
+;; cf. resources/public/img/chapter3_3/exercise3-16_1_return-3.png
+(def count-pairs-return-3
+  (-> [(d/node-attrs {:shape :record})
+       [:c1 (create-node "<car>|<cdr>")]
+       [:c2 (create-node "<car>|<cdr>")]
+       [:c3 (create-node "<car>|<cdr>")]
+
+       (d/node-attrs {:shape :square})
+       [:v1 (create-node "a")]
+       [:v2 (create-node "b")]
+       [:v3 (create-node "c")]
+
+       (d/node-attrs {:shape :none})
+       [:s1 (create-node "x")]
+       [:s2 (create-node "y")]
+       [:s3 (create-node "z")]
+
+       [:s1 :c1]
+       [:s2 :c2]
+       [:s3 :c3]
+       [:c1:car :v1]
+       [:c1:cdr :c2]
+       [:c2:car :v2]
+       [:c2:cdr :c3]
+       [:c3:car :v3]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-16_2_return-4.png
+(def count-pairs-return-4
+  (-> [(d/node-attrs {:shape :record})
+       [:c1 (create-node "<car>|<cdr>")]
+       [:c2 (create-node "<car>|<cdr>")]
+       [:c3 (create-node "<car>|<cdr>")]
+
+       (d/node-attrs {:shape :square})
+       [:v1 (create-node "a")]
+       [:v2 (create-node "b")]
+       [:v3 (create-node "c")]
+
+       (d/node-attrs {:shape :none})
+       [:s1 (create-node "x")]
+       [:s2 (create-node "y")]
+       [:s3 (create-node "z")]
+
+       [:s1 :c1]
+       [:s2 :c2]
+       [:s3 :c3]
+       [:c1:car :v1]
+       [:c1:cdr :c2]
+       [:c2:car :c3]
+       [:c2:cdr :c3]
+       [:c3:car :v3]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-16_3_return-7.png
+(def count-pairs-return-7
+  (-> [(d/node-attrs {:shape :record})
+       [:c1 (create-node "<car>|<cdr>")]
+       [:c2 (create-node "<car>|<cdr>")]
+       [:c3 (create-node "<car>|<cdr>")]
+
+       (d/node-attrs {:shape :square})
+       [:v1 (create-node "a")]
+       [:v2 (create-node "b")]
+       [:v3 (create-node "c")]
+
+       (d/node-attrs {:shape :none})
+       [:s1 (create-node "x")]
+       [:s2 (create-node "y")]
+       [:s3 (create-node "z")]
+
+       [:s1 :c1]
+       [:s2 :c2]
+       [:s3 :c3]
+       [:c1:car :c2]
+       [:c1:cdr :c2]
+       [:c2:car :c3]
+       [:c2:cdr :c3]
+       [:c3:car :v3]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-16_4_never-return.png
+(def count-pairs-never-return
+  (-> [(d/node-attrs {:shape :record})
+       [:c1 (create-node "<car>|<cdr>")]
+       [:c2 (create-node "<car>|<cdr>")]
+       [:c3 (create-node "<car>|<cdr>")]
+
+       (d/node-attrs {:shape :square})
+       [:v1 (create-node "a")]
+       [:v2 (create-node "b")]
+       [:v3 (create-node "c")]
+
+       (d/node-attrs {:shape :none})
+       [:s1 (create-node "x")]
+       [:s2 (create-node "y")]
+       [:s3 (create-node "z")]
+
+       [:s1 :c1]
+       [:s2 :c2]
+       [:s3 :c3]
+       [:c1:car :v1]
+       [:c1:cdr :c2]
+       [:c2:car :v2]
+       [:c2:cdr :c3]
+       [:c3:car :v3]
+       [:c3:cdr :c1]]
+      d/digraph
+      d/dot))
+
+;; Exercise 3.17
+;; TODO
+
+;; Exercise 3.18
+;; TODO
+
+;; Exercise 3.19
+;; TODO
+
+;; Exercise 3.20
+;; TODO
+
 ;;; 3.3.2  Representing Queues
 
 ;;; 3.3.3  Representing Tables
