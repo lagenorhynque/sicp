@@ -31,6 +31,8 @@
                 (repeatedly 7 #((acc :some-other-password :withdraw) 40))))
     (is (= "Calling the cops..." ((acc :some-other-password :withdraw) 40)))))
 
+;;; 3.1.2  The Benefits of Introducing Assignment
+
 ;; Exercise 3.5
 (deftest estimate-pi'-test
   (is (< 3 (estimate-pi' 10000) 4)))
@@ -39,6 +41,8 @@
 (deftest rand'-test
   (is (= 10 ((rand' :reset) 10)))
   (is (= 11 (rand' :generate))))
+
+;;; 3.1.3  The Costs of Introducing Assignment
 
 ;; Exercise 3.7
 (deftest make-joint-test

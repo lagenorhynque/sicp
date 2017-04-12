@@ -1,6 +1,7 @@
 (ns sicp.chapter3-3
   (:require [dorothy.core :as d]
-            [sicp.chapter3-2 :refer [create-node]]))
+            [sicp.chapter3-2 :refer [create-node]]
+            [sicp.common.list :refer :all]))
 
 ;;;; 3.3  Modeling with Mutable Data
 
@@ -356,6 +357,13 @@
       d/dot))
 
 ;; Exercise 3.16
+(defn count-pairs [x]
+  (if-not (pair? x)
+    0
+    (+ (count-pairs (car x))
+       (count-pairs (cdr x))
+       1)))
+
 ;; cf. resources/public/img/chapter3_3/exercise3-16_1_return-3.png
 (def count-pairs-return-3
   (-> [(d/node-attrs {:shape :record})
@@ -470,7 +478,18 @@
       d/dot))
 
 ;; Exercise 3.17
-;; TODO
+(defn count-pairs' [x]
+  (let [s (atom #{})
+        f (fn f [x]
+            (if-not (pair? x)
+              0
+              (+ (if (@s x)
+                   0
+                   (do (swap! s conj x)
+                       1))
+                 (f (car x))
+                 (f (cdr x)))))]
+    (f x)))
 
 ;; Exercise 3.18
 ;; TODO
