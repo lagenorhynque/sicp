@@ -18,7 +18,11 @@
     (set-car! y z)
     (is (= 4 (count-pairs x)))
     (set-car! x y)
-    (is (= 7 (count-pairs x)))))
+    (is (= 7 (count-pairs x)))
+    (set-car! x 'a)
+    (set-car! y 'b)
+    (set-cdr! z x)
+    (is (thrown? StackOverflowError (count-pairs x)))))
 
 ;; Exercise 3.17
 (deftest count-pairs'-test
@@ -33,7 +37,7 @@
     (set-car! x y)
     (is (= 3 (count-pairs' x)))))
 
-;;; 3.3.2  Representing Queues
+;; Exercise 3.18
 (deftest contains-cycle?-test
   (let [x (kons 'a nil)
         y (kons 'b nil)
@@ -43,6 +47,8 @@
     (is (false? (contains-cycle? x)))
     (set-cdr! z x)
     (is (true? (contains-cycle? x)))))
+
+;;; 3.3.2  Representing Queues
 
 ;;; 3.3.3  Representing Tables
 
