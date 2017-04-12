@@ -34,6 +34,15 @@
     (is (= 3 (count-pairs' x)))))
 
 ;;; 3.3.2  Representing Queues
+(deftest contains-cycle?-test
+  (let [x (kons 'a nil)
+        y (kons 'b nil)
+        z (kons 'c nil)]
+    (set-cdr! x y)
+    (set-cdr! y z)
+    (is (false? (contains-cycle? x)))
+    (set-cdr! z x)
+    (is (true? (contains-cycle? x)))))
 
 ;;; 3.3.3  Representing Tables
 

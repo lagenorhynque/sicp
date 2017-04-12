@@ -492,7 +492,17 @@
     (f x)))
 
 ;; Exercise 3.18
-;; TODO
+(defn contains-cycle? [x]
+  (let [s (atom #{})
+        f (fn f [x]
+            (cond
+              (or (nil? (cdr x))
+                  (not (pair? (cdr x)))) false
+              ;; FIXME
+              (@s x) true
+              :else (do (swap! s conj x)
+                        (recur (cdr x)))))]
+    (f x)))
 
 ;; Exercise 3.19
 ;; TODO
