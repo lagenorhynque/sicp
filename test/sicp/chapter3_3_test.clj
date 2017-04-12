@@ -35,6 +35,10 @@
     (set-car! y z)
     (is (= 3 (count-pairs' x)))
     (set-car! x y)
+    (is (= 3 (count-pairs' x)))
+    (set-car! x 'a)
+    (set-car! y 'b)
+    (set-cdr! z x)
     (is (= 3 (count-pairs' x)))))
 
 ;; Exercise 3.18
@@ -47,6 +51,17 @@
     (is (false? (contains-cycle? x)))
     (set-cdr! z x)
     (is (true? (contains-cycle? x)))))
+
+;; Exercise 3.19
+(deftest contains-cycle?'-test
+  (let [x (kons 'a nil)
+        y (kons 'b nil)
+        z (kons 'c nil)]
+    (set-cdr! x y)
+    (set-cdr! y z)
+    (is (false? (contains-cycle?' x)))
+    (set-cdr! z x)
+    (is (true? (contains-cycle?' x)))))
 
 ;;; 3.3.2  Representing Queues
 

@@ -479,16 +479,15 @@
 
 ;; Exercise 3.17
 (defn count-pairs' [x]
-  (let [s (atom #{})
+  (let [s (atom [])
         f (fn f [x]
-            (if-not (pair? x)
+            (if (or (not (pair? x))
+                    (some #(identical? x %) @s))
               0
-              (+ (if (@s x)
-                   0
-                   (do (swap! s conj x)
-                       1))
-                 (f (car x))
-                 (f (cdr x)))))]
+              (do (swap! s conj x)
+                  (+ (f (car x))
+                     (f (cdr x))
+                     1))))]
     (f x)))
 
 ;; Exercise 3.18
@@ -496,18 +495,73 @@
   (let [s (atom [])
         f (fn f [x]
             (cond
-              (or (nil? (cdr x))
-                  (not (pair? (cdr x)))) false
+              (not (pair? (cdr x))) false
               (some #(identical? x %) @s) true
               :else (do (swap! s conj x)
                         (recur (cdr x)))))]
     (f x)))
 
 ;; Exercise 3.19
-;; TODO
+(defn contains-cycle?' [x]
+  (letfn [(f [a b]
+            (cond
+              (identical? a b) true
+              (or (nil? (cdr a))
+                  (nil? (cdr (cdr b)))) false
+              :else (recur (cdr a)
+                           (cdr (cdr b)))))]
+    (if (and (pair? x)
+             (pair? (cdr x)))
+      (f x (cdr x))
+      false)))
 
 ;; Exercise 3.20
-;; TODO
+(def cons-define-x
+  (-> [(d/node-attrs {:shape :record})
+       [:g (create-node "global env"
+                        #sicp/s "cons
+                                |car
+                                |cdr
+                                |set-car!
+                                |set-cdr!
+                                |x")]
+       [:e1 (create-node "E1"
+                         #sicp/s "x: 1
+                                 |y: 2
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+
+       [:e1 :g]]
+      d/digraph
+      d/dot))
+
+(def cons-define-z
+  (-> [(d/node-attrs {:shape :record})
+       [:g (create-node "global env"
+                        #sicp/s "cons
+                                |car
+                                |cdr
+                                |set-car!
+                                |set-cdr!
+                                |x
+                                |z")]
+       [:e1 (create-node "E1"
+                         #sicp/s "x: 1
+                                 |y: 2
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e2 (create-node "E2"
+                         #sicp/s "x: E1
+                                 |y: E1
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e1 :g]
+       [:e2 :g]]
+      d/digraph
+      d/dot))
 
 ;;; 3.3.2  Representing Queues
 
