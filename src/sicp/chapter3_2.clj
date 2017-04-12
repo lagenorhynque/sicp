@@ -1,6 +1,7 @@
 (ns sicp.chapter3-2
   (:require [clojure.string :as str]
-            [dorothy.core :as d]))
+            [dorothy.core :as d]
+            [sicp.common.string :refer [*newline-char*]]))
 
 ;;;; 3.2  The Environment Model of Evaluation
 
@@ -9,19 +10,6 @@
 ;;; 3.2.2  Applying Simple Procedures
 
 ;; Exercise 3.9
-(def ^:dynamic *newline-char*
-  "&#92;n")
-
-(defn strip-margin
-  ([s]
-   (strip-margin s "\\|"))
-  ([s delimiter]
-   (let [p (re-pattern (str "^\\s*" delimiter))]
-     (->> s
-          (str/split-lines)
-          (map #(str/replace-first % p ""))
-          (str/join *newline-char*)))))
-
 (defn create-node [& xs]
   {:label (str/join (str *newline-char* *newline-char*) xs)})
 
