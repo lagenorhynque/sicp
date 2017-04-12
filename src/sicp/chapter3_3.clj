@@ -516,6 +516,7 @@
       false)))
 
 ;; Exercise 3.20
+;; cf. resources/public/img/chapter3_3/exercise3-20_1_define-x.png
 (def cons-define-x
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -536,6 +537,7 @@
       d/digraph
       d/dot))
 
+;; cf. resources/public/img/chapter3_3/exercise3-20_2_define-z.png
 (def cons-define-z
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
@@ -560,6 +562,139 @@
                                  |dispatch")]
        [:e1 :g]
        [:e2 :g]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-20_3_cdr-z.png
+(def cons-cdr-z
+  (-> [(d/node-attrs {:shape :record})
+       [:g (create-node "global env"
+                        #sicp/s "cons
+                                |car
+                                |cdr
+                                |set-car!
+                                |set-cdr!
+                                |x
+                                |z")]
+       [:e1 (create-node "E1"
+                         #sicp/s "x: 1
+                                 |y: 2
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e2 (create-node "E2"
+                         #sicp/s "x: E1
+                                 |y: E1
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e3 (create-node "E3"
+                         #sicp/s "z: E2")]
+
+       (d/node-attrs {:shape :note})
+       (d/subgraph
+        [[:node (create-node
+                 #sicp/s "(z 'cdr)")]
+         :c3])
+
+       [:e1 :g]
+       [:e2 :g]
+       [:e3 :g]
+
+       (d/edge-attrs {:dir :none})
+       [:c3 :e3]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-20_4_set-car!.png
+(def cons-set-car!
+  (-> [(d/node-attrs {:shape :record})
+       [:g (create-node "global env"
+                        #sicp/s "cons
+                                |car
+                                |cdr
+                                |set-car!
+                                |set-cdr!
+                                |x
+                                |z")]
+       [:e1 (create-node "E1"
+                         #sicp/s "x: 1
+                                 |y: 2
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e2 (create-node "E2"
+                         #sicp/s "x: E1
+                                 |y: E1
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e3 (create-node "E3"
+                         #sicp/s "z: E2")]
+       [:e4 (create-node "E4"
+                         #sicp/s "z: E1
+                                 |new-value: 17")]
+
+       (d/node-attrs {:shape :note})
+       (d/subgraph
+        [[:node (create-node
+                 #sicp/s "(z 'cdr)")]
+         :c3])
+       (d/subgraph
+        [[:node (create-node
+                  #sicp/s "((z 'set-car!) new-value)
+                          |z")]
+          :c4])
+
+       [:e1 :g]
+       [:e2 :g]
+       [:e3 :g]
+       [:e4 :g]
+
+       (d/edge-attrs {:dir :none})
+       [:c3 :e3]
+       [:c4 :e4]]
+      d/digraph
+      d/dot))
+
+;; cf. resources/public/img/chapter3_3/exercise3-20_5_car.png
+(def cons-car
+  (-> [(d/node-attrs {:shape :record})
+       [:g (create-node "global env"
+                        #sicp/s "cons
+                                |car
+                                |cdr
+                                |set-car!
+                                |set-cdr!
+                                |x
+                                |z")]
+       [:e1 (create-node "E1"
+                         #sicp/s "x: 17
+                                 |y: 2
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e2 (create-node "E2"
+                         #sicp/s "x: E1
+                                 |y: E1
+                                 |set-x!
+                                 |set-y!
+                                 |dispatch")]
+       [:e5 (create-node "E5"
+                         #sicp/s "z: E1")]
+
+       (d/node-attrs {:shape :note})
+       (d/subgraph
+        [[:node (create-node
+                 #sicp/s "(z 'car)")]
+         :c5])
+
+       [:e1 :g]
+       [:e2 :g]
+       [:e5 :g]
+
+       (d/edge-attrs {:dir :none})
+       [:c5 :e5]]
       d/digraph
       d/dot))
 
