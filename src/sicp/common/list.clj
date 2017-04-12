@@ -25,8 +25,8 @@
   (equals [this obj]
     (or (identical? this obj)
         (and (instance? Pair obj)
-             (= @a @(:a obj))
-             (= @b @(:b obj)))))
+             (= @a @(.a obj))
+             (= @b @(.b obj)))))
   (hashCode [_]
     (reduce #(+ (* 31 %1) (hash %2))
             17
