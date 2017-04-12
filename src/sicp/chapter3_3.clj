@@ -479,12 +479,12 @@
 
 ;; Exercise 3.17
 (defn count-pairs' [x]
-  (let [s (atom [])
+  (let [memo (atom [])
         f (fn f [x]
             (if (or (not (pair? x))
-                    (some #(identical? x %) @s))
+                    (some #(identical? x %) @memo))
               0
-              (do (swap! s conj x)
+              (do (swap! memo conj x)
                   (+ (f (car x))
                      (f (cdr x))
                      1))))]
@@ -492,12 +492,12 @@
 
 ;; Exercise 3.18
 (defn contains-cycle? [x]
-  (let [s (atom [])
+  (let [memo (atom [])
         f (fn f [x]
             (cond
               (not (pair? (cdr x))) false
-              (some #(identical? x %) @s) true
-              :else (do (swap! s conj x)
+              (some #(identical? x %) @memo) true
+              :else (do (swap! memo conj x)
                         (recur (cdr x)))))]
     (f x)))
 
