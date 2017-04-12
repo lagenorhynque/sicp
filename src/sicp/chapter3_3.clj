@@ -493,13 +493,12 @@
 
 ;; Exercise 3.18
 (defn contains-cycle? [x]
-  (let [s (atom #{})
+  (let [s (atom [])
         f (fn f [x]
             (cond
               (or (nil? (cdr x))
                   (not (pair? (cdr x)))) false
-              ;; FIXME
-              (@s x) true
+              (some #(identical? x %) @s) true
               :else (do (swap! s conj x)
                         (recur (cdr x)))))]
     (f x)))
