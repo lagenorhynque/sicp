@@ -1,7 +1,7 @@
 (ns sicp.chapter3-2
   (:require [clojure.string :as str]
             [dorothy.core :as d]
-            [sicp.common.string :refer [*newline-char*]]))
+            [sicp.common.graph :refer [create-node]]))
 
 ;;;; 3.2  The Environment Model of Evaluation
 
@@ -10,9 +10,6 @@
 ;;; 3.2.2  Applying Simple Procedures
 
 ;; Exercise 3.9
-(defn create-node [& xs]
-  {:label (str/join (str *newline-char* *newline-char*) xs)})
-
 ;; recursive version
 ;; cf. resources/public/img/chapter3_2/exercise3-9_recursive.png
 (def factorial-recursive

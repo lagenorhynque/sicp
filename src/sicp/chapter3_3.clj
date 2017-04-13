@@ -1,6 +1,6 @@
 (ns sicp.chapter3-3
   (:require [dorothy.core :as d]
-            [sicp.chapter3-2 :refer [create-node]]
+            [sicp.common.graph :refer [create-node]]
             [sicp.common.list :refer :all]))
 
 ;;;; 3.3  Modeling with Mutable Data
