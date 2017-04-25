@@ -65,7 +65,22 @@
 
 ;;; 3.3.2  Representing Queues
 
+;; Exercise 3.21
+;; TODO
+
+;; Exercise 3.22
+;; TODO
+
+;; Exercise 3.23
+;; TODO
+
 ;;; 3.3.3  Representing Tables
+
+;; Exercise 3.24
+;; TODO
+
+;; Exercise 3.25
+;; TODO
 
 ;;; 3.3.4  A Simulator for Digital Circuits
 

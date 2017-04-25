@@ -700,7 +700,101 @@
 
 ;;; 3.3.2  Representing Queues
 
+(defn front-ptr [queue]
+  (car queue))
+(defn rear-ptr [queue]
+  (cdr queue))
+(defn set-front-ptr! [queue item]
+  (set-car! queue item))
+(defn set-rear-ptr! [queue item]
+  (set-cdr! queue item))
+
+(defn empty-queue? [queue]
+  (nil? (front-ptr queue)))
+
+(defn make-queue []
+  (kons nil nil))
+
+(defn front-queue [queue]
+  (if (empty-queue? queue)
+    (throw (IllegalArgumentException.
+            (str "FRONT called with an empty queue " queue)))
+    (car (front-ptr queue))))
+
+(defn insert-queue! [queue item]
+  (let [new-pair (kons item nil)]
+    (if (empty-queue? queue)
+      (do (set-front-ptr! queue new-pair)
+          (set-rear-ptr! queue new-pair)
+          queue)
+      (do (set-cdr! (rear-ptr queue) new-pair)
+          (set-rear-ptr! queue new-pair)
+          queue))))
+
+(defn delete-queue! [queue]
+  (if (empty-queue? queue)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty queue " queue)))
+    (do (set-front-ptr! queue (cdr (front-ptr queue)))
+        queue)))
+
+;; Exercise 3.21
+(defn queue->vector [queue]
+  (loop [coll (front-ptr queue)
+         v []]
+    (if (nil? coll)
+      v
+      (recur (cdr coll) (conj v (car coll))))))
+
+(defn print-queue [queue]
+  (println (queue->vector queue)))
+
+;; Exercise 3.22
+(defn make-queue' []
+  (let [front-ptr (atom nil)
+        rear-ptr (atom nil)
+        empty-queue? (fn []
+                       (nil? @front-ptr))
+        front-queue (fn []
+                      (if (empty-queue?)
+                        (throw (IllegalArgumentException.
+                                "FRONT called with an empty queue"))
+                        (car @front-ptr)))
+        insert-queue! (fn [item]
+                        (let [new-pair (kons item nil)]
+                          (if (empty-queue?)
+                            (do (reset! front-ptr new-pair)
+                                (reset! rear-ptr new-pair)
+                                @front-ptr)
+                            (do (set-cdr! @rear-ptr new-pair)
+                                (reset! rear-ptr new-pair)
+                                @front-ptr))))
+        delete-queue! (fn []
+                        (if (empty-queue?)
+                          (throw (IllegalArgumentException.
+                                  "DELETE called with an empty queue"))
+                          (do (reset! front-ptr (cdr @front-ptr))
+                              @front-ptr)))
+        dispatch (fn [m]
+                   (case m
+                     :empty-queue? empty-queue?
+                     :front-queue front-queue
+                     :insert-queue! insert-queue!
+                     :delete-queue! delete-queue!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation " m)))))]
+    dispatch))
+
+;; Exercise 3.23
+;; TODO
+
 ;;; 3.3.3  Representing Tables
+
+;; Exercise 3.24
+;; TODO
+
+;; Exercise 3.25
+;; TODO
 
 ;;; 3.3.4  A Simulator for Digital Circuits
 
