@@ -908,7 +908,33 @@
     dispatch))
 
 ;; Exercise 3.25
-;; TODO
+;; FIXME
+(defn lookup'' [keys table]
+  (loop [keys keys
+         table table]
+    (let [subtable (assok (first keys) (cdr table))]
+      (if subtable
+        (if (empty? (rest keys))
+          (cdr subtable)
+          (recur (rest keys) subtable))
+        false))))
+
+;; FIXME
+(defn insert!'' [keys value table]
+  (loop [keys keys
+         table table]
+    (let [subtable (assok (first keys) (cdr table))]
+      (if subtable
+        (if (empty? (rest keys))
+          (set-cdr! subtable value)
+          (recur (rest keys) subtable))
+        (set-cdr! table
+                  (let [rkeys (reverse keys)]
+                    (kons (reduce #(scheme-like-list %2 %1)
+                                  (kons (first rkeys) value)
+                                  (rest rkeys))
+                          (cdr table)))))))
+  :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
 
