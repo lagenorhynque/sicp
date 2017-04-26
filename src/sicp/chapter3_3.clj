@@ -725,11 +725,10 @@
   (let [new-pair (kons item nil)]
     (if (empty-queue? queue)
       (do (set-front-ptr! queue new-pair)
-          (set-rear-ptr! queue new-pair)
-          queue)
+          (set-rear-ptr! queue new-pair))
       (do (set-cdr! (rear-ptr queue) new-pair)
-          (set-rear-ptr! queue new-pair)
-          queue))))
+          (set-rear-ptr! queue new-pair)))
+    queue))
 
 (defn delete-queue! [queue]
   (if (empty-queue? queue)
@@ -758,21 +757,22 @@
         front-queue (fn []
                       (if (empty-queue?)
                         (throw (IllegalArgumentException.
-                                "FRONT called with an empty queue"))
+                                (str "FRONT called with an empty queue"
+                                     @front-ptr)))
                         (car @front-ptr)))
         insert-queue! (fn [item]
                         (let [new-pair (kons item nil)]
                           (if (empty-queue?)
                             (do (reset! front-ptr new-pair)
-                                (reset! rear-ptr new-pair)
-                                @front-ptr)
+                                (reset! rear-ptr new-pair))
                             (do (set-cdr! @rear-ptr new-pair)
-                                (reset! rear-ptr new-pair)
-                                @front-ptr))))
+                                (reset! rear-ptr new-pair)))
+                          @front-ptr))
         delete-queue! (fn []
                         (if (empty-queue?)
                           (throw (IllegalArgumentException.
-                                  "DELETE called with an empty queue"))
+                                  (str "DELETE called with an empty queue"
+                                       @front-ptr)))
                           (do (reset! front-ptr (cdr @front-ptr))
                               @front-ptr)))
         dispatch (fn [m]
@@ -786,7 +786,89 @@
     dispatch))
 
 ;; Exercise 3.23
-;; TODO
+(defn make-deque []
+  (kons nil nil))
+
+(defn empty-deque? [deque]
+  (nil? (front-ptr deque)))
+
+(defn deque-element [item]
+  (scheme-like-list item nil nil))
+(defn deque-item [deque]
+  (car deque))
+(defn deque-next [deque]
+  (car (cdr deque)))
+(defn deque-previous [deque]
+  (car (cdr (cdr deque))))
+(defn set-deque-next! [deque ptr]
+  (set-car! (cdr deque) ptr))
+(defn set-deque-previous! [deque ptr]
+  (set-car! (cdr (cdr deque)) ptr))
+
+(defn deque->vector [deque]
+  (loop [coll (front-ptr deque)
+         v []]
+    (if (nil? coll)
+      v
+      (recur (deque-next coll) (conj v (deque-item coll))))))
+
+(defn front-deque [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "FRONT called with an empty deque "
+                 (deque->vector deque))))
+    (deque-item (front-ptr deque))))
+
+(defn rear-deque [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "REAR called with an empty deque "
+                 (deque->vector deque))))
+    (deque-item (rear-ptr deque))))
+
+(defn front-insert-deque! [deque item]
+  (let [new-elem (deque-element item)]
+    (if (empty-deque? deque)
+      (do (set-front-ptr! deque new-elem)
+          (set-rear-ptr! deque new-elem))
+      (do (set-deque-next! new-elem (front-ptr deque))
+          (set-deque-previous! (front-ptr deque) new-elem)
+          (set-front-ptr! deque new-elem)))
+    (deque->vector deque)))
+
+(defn rear-insert-deque! [deque item]
+  (let [new-elem (deque-element item)]
+    (if (empty-deque? deque)
+      (do (set-front-ptr! deque new-elem)
+          (set-rear-ptr! deque new-elem))
+      (do (set-deque-next! (rear-ptr deque) new-elem)
+          (set-deque-previous! new-elem (rear-ptr deque))
+          (set-rear-ptr! deque new-elem)))
+    (deque->vector deque)))
+
+(defn front-delete-deque! [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty deque "
+                 (deque->vector deque))))
+    (do (if-let [next (deque-next (front-ptr deque))]
+          (do (set-deque-previous! next nil)
+              (set-front-ptr! deque next))
+          (do (set-front-ptr! deque nil)
+              (set-rear-ptr! deque nil)))
+        (deque->vector deque))))
+
+(defn rear-delete-deque! [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty deque "
+                 (deque->vector deque))))
+    (do (if-let [previous (deque-previous (rear-ptr deque))]
+          (do (set-deque-next! previous nil)
+              (set-rear-ptr! deque previous))
+          (do (set-front-ptr! deque nil)
+              (set-rear-ptr! deque nil)))
+        (deque->vector deque))))
 
 ;;; 3.3.3  Representing Tables
 
@@ -797,69 +879,59 @@
     :else (recur key (cdr records))))
 
 (defn lookup [key table]
-  (let [record (assok key (cdr table))]
-    (if record
-      (cdr record)
-      false)))
+  (if-let [record (assok key (cdr table))]
+    (cdr record)
+    false))
 
 (defn insert! [key value table]
-  (let [record (assok key (cdr table))]
-    (if record
-      (set-cdr! record value)
-      (set-cdr! table
-                (kons (kons key value) (cdr table)))))
+  (if-let [record (assok key (cdr table))]
+    (set-cdr! record value)
+    (set-cdr! table
+              (kons (kons key value) (cdr table))))
   :ok)
 
 (defn make-table []
   (scheme-like-list '*table*))
 
 (defn lookup' [key-1 key-2 table]
-  (let [subtable (assok key-1 (cdr table))]
-    (if subtable
-      (let [record (assok key-2 (cdr subtable))]
-        (if record
-          (cdr record)
-          false))
-      false)))
+  (if-let [subtable (assok key-1 (cdr table))]
+    (if-let [record (assok key-2 (cdr subtable))]
+      (cdr record)
+      false)
+    false))
 
 (defn insert!' [key-1 key-2 value table]
-  (let [subtable (assok key-1 (cdr table))]
-    (if subtable
-      (let [record (assok key-2 (cdr subtable))]
-        (if record
-          (set-cdr! record value)
-          (set-cdr! subtable
-                    (kons (kons key-2 value)
-                          (cdr subtable)))))
-      (set-cdr! table
-                (kons (scheme-like-list key-1
-                                        (kons key-2 value))
-                      (cdr table)))))
+  (if-let [subtable (assok key-1 (cdr table))]
+    (if-let [record (assok key-2 (cdr subtable))]
+      (set-cdr! record value)
+      (set-cdr! subtable
+                (kons (kons key-2 value)
+                      (cdr subtable))))
+    (set-cdr! table
+              (kons (scheme-like-list key-1
+                                      (kons key-2 value))
+                    (cdr table))))
   :ok)
 
 (defn make-table' []
   (let [local-table (scheme-like-list '*table*)
         lookup (fn [key-1 key-2]
-                 (let [subtable (assok key-1 (cdr local-table))]
-                   (if subtable
-                     (let [record (assok key-2 (cdr subtable))]
-                       (if record
-                         (cdr record)
-                         false))
-                     false)))
+                 (if-let [subtable (assok key-1 (cdr local-table))]
+                   (if-let [record (assok key-2 (cdr subtable))]
+                     (cdr record)
+                     false)
+                   false))
         insert! (fn [key-1 key-2 value]
-                  (let [subtable (assok key-1 (cdr local-table))]
-                    (if subtable
-                      (let [record (assok key-2 (cdr subtable))]
-                        (if record
-                          (set-cdr! record value)
-                          (set-cdr! subtable
-                                    (kons (kons key-2 value)
-                                          (cdr subtable)))))
-                      (set-cdr! local-table
-                                (kons (scheme-like-list key-1
-                                                        (kons key-2 value))
-                                      (cdr local-table)))))
+                  (if-let [subtable (assok key-1 (cdr local-table))]
+                    (if-let [record (assok key-2 (cdr subtable))]
+                      (set-cdr! record value)
+                      (set-cdr! subtable
+                                (kons (kons key-2 value)
+                                      (cdr subtable))))
+                    (set-cdr! local-table
+                              (kons (scheme-like-list key-1
+                                                      (kons key-2 value))
+                                    (cdr local-table))))
                   :ok)
         dispatch (fn [m]
                    (case m
@@ -872,32 +944,28 @@
 ;; Exercise 3.24
 (defn make-table'' [& {:keys [same-key?] :or {same-key? =}}]
   (let [local-table (scheme-like-list '*table*)
-        assok (fn [key records]
+        assok (fn assok [key records]
                 (cond
                   (nil? records) false
                   (same-key? key (car (car records))) (car records)
                   :else (recur key (cdr records))))
         lookup (fn [key-1 key-2]
-                 (let [subtable (assok key-1 (cdr local-table))]
-                   (if subtable
-                     (let [record (assok key-2 (cdr subtable))]
-                       (if record
-                         (cdr record)
-                         false))
-                     false)))
+                 (if-let [subtable (assok key-1 (cdr local-table))]
+                   (if-let [record (assok key-2 (cdr subtable))]
+                     (cdr record)
+                     false)
+                   false))
         insert! (fn [key-1 key-2 value]
-                  (let [subtable (assok key-1 (cdr local-table))]
-                    (if subtable
-                      (let [record (assok key-2 (cdr subtable))]
-                        (if record
-                          (set-cdr! record value)
-                          (set-cdr! subtable
-                                    (kons (kons key-2 value)
-                                          (cdr subtable)))))
-                      (set-cdr! local-table
-                                (kons (scheme-like-list key-1
-                                                        (kons key-2 value))
-                                      (cdr local-table)))))
+                  (if-let [subtable (assok key-1 (cdr local-table))]
+                    (if-let [record (assok key-2 (cdr subtable))]
+                      (set-cdr! record value)
+                      (set-cdr! subtable
+                                (kons (kons key-2 value)
+                                      (cdr subtable))))
+                    (set-cdr! local-table
+                              (kons (scheme-like-list key-1
+                                                      (kons key-2 value))
+                                    (cdr local-table))))
                   :ok)
         dispatch (fn [m]
                    (case m
@@ -912,28 +980,26 @@
 (defn lookup'' [keys table]
   (loop [keys keys
          table table]
-    (let [subtable (assok (first keys) (cdr table))]
-      (if subtable
-        (if (empty? (rest keys))
-          (cdr subtable)
-          (recur (rest keys) subtable))
-        false))))
+    (if-let [subtable (assok (first keys) (cdr table))]
+      (if (empty? (rest keys))
+        (cdr subtable)
+        (recur (rest keys) subtable))
+      false)))
 
 ;; FIXME
 (defn insert!'' [keys value table]
   (loop [keys keys
          table table]
-    (let [subtable (assok (first keys) (cdr table))]
-      (if subtable
-        (if (empty? (rest keys))
-          (set-cdr! subtable value)
-          (recur (rest keys) subtable))
-        (set-cdr! table
-                  (let [rkeys (reverse keys)]
-                    (kons (reduce #(scheme-like-list %2 %1)
-                                  (kons (first rkeys) value)
-                                  (rest rkeys))
-                          (cdr table)))))))
+    (if-let [subtable (assok (first keys) (cdr table))]
+      (if (empty? (rest keys))
+        (set-cdr! subtable value)
+        (recur (rest keys) subtable))
+      (set-cdr! table
+                (let [rkeys (reverse keys)]
+                  (kons (reduce #(scheme-like-list %2 %1)
+                                (kons (first rkeys) value)
+                                (rest rkeys))
+                        (cdr table))))))
   :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
