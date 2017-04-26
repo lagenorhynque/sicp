@@ -790,8 +790,122 @@
 
 ;;; 3.3.3  Representing Tables
 
+(defn assok [key records]
+  (cond
+    (nil? records) false
+    (= key (car (car records))) (car records)
+    :else (recur key (cdr records))))
+
+(defn lookup [key table]
+  (let [record (assok key (cdr table))]
+    (if record
+      (cdr record)
+      false)))
+
+(defn insert! [key value table]
+  (let [record (assok key (cdr table))]
+    (if record
+      (set-cdr! record value)
+      (set-cdr! table
+                (kons (kons key value) (cdr table)))))
+  :ok)
+
+(defn make-table []
+  (scheme-like-list '*table*))
+
+(defn lookup' [key-1 key-2 table]
+  (let [subtable (assok key-1 (cdr table))]
+    (if subtable
+      (let [record (assok key-2 (cdr subtable))]
+        (if record
+          (cdr record)
+          false))
+      false)))
+
+(defn insert!' [key-1 key-2 value table]
+  (let [subtable (assok key-1 (cdr table))]
+    (if subtable
+      (let [record (assok key-2 (cdr subtable))]
+        (if record
+          (set-cdr! record value)
+          (set-cdr! subtable
+                    (kons (kons key-2 value)
+                          (cdr subtable)))))
+      (set-cdr! table
+                (kons (scheme-like-list key-1
+                                        (kons key-2 value))
+                      (cdr table)))))
+  :ok)
+
+(defn make-table' []
+  (let [local-table (scheme-like-list '*table*)
+        lookup (fn [key-1 key-2]
+                 (let [subtable (assok key-1 (cdr local-table))]
+                   (if subtable
+                     (let [record (assok key-2 (cdr subtable))]
+                       (if record
+                         (cdr record)
+                         false))
+                     false)))
+        insert! (fn [key-1 key-2 value]
+                  (let [subtable (assok key-1 (cdr local-table))]
+                    (if subtable
+                      (let [record (assok key-2 (cdr subtable))]
+                        (if record
+                          (set-cdr! record value)
+                          (set-cdr! subtable
+                                    (kons (kons key-2 value)
+                                          (cdr subtable)))))
+                      (set-cdr! local-table
+                                (kons (scheme-like-list key-1
+                                                        (kons key-2 value))
+                                      (cdr local-table)))))
+                  :ok)
+        dispatch (fn [m]
+                   (case m
+                     :lookup-proc lookup
+                     :insert-proc! insert!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation -- TABLE " m)))))]
+    dispatch))
+
 ;; Exercise 3.24
-;; TODO
+(defn make-table'' [& {:keys [same-key?] :or {same-key? =}}]
+  (let [local-table (scheme-like-list '*table*)
+        assok (fn [key records]
+                (cond
+                  (nil? records) false
+                  (same-key? key (car (car records))) (car records)
+                  :else (recur key (cdr records))))
+        lookup (fn [key-1 key-2]
+                 (let [subtable (assok key-1 (cdr local-table))]
+                   (if subtable
+                     (let [record (assok key-2 (cdr subtable))]
+                       (if record
+                         (cdr record)
+                         false))
+                     false)))
+        insert! (fn [key-1 key-2 value]
+                  (let [subtable (assok key-1 (cdr local-table))]
+                    (if subtable
+                      (let [record (assok key-2 (cdr subtable))]
+                        (if record
+                          (set-cdr! record value)
+                          (set-cdr! subtable
+                                    (kons (kons key-2 value)
+                                          (cdr subtable)))))
+                      (set-cdr! local-table
+                                (kons (scheme-like-list key-1
+                                                        (kons key-2 value))
+                                      (cdr local-table)))))
+                  :ok)
+        dispatch (fn [m]
+                   (case m
+                     :lookup-proc lookup
+                     :insert-proc! insert!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation -- TABLE " m)))))]
+    dispatch))
 
 ;; Exercise 3.25
 ;; TODO
