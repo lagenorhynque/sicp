@@ -757,7 +757,7 @@
         front-queue (fn []
                       (if (empty-queue?)
                         (throw (IllegalArgumentException.
-                                (str "FRONT called with an empty queue"
+                                (str "FRONT called with an empty queue "
                                      @front-ptr)))
                         (car @front-ptr)))
         insert-queue! (fn [item]
@@ -771,7 +771,7 @@
         delete-queue! (fn []
                         (if (empty-queue?)
                           (throw (IllegalArgumentException.
-                                  (str "DELETE called with an empty queue"
+                                  (str "DELETE called with an empty queue "
                                        @front-ptr)))
                           (do (reset! front-ptr (cdr @front-ptr))
                               @front-ptr)))

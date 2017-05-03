@@ -66,21 +66,102 @@
 ;;; 3.3.2  Representing Queues
 
 ;; Exercise 3.21
-;; TODO
+(deftest print-queue-test
+  (let [q1 (make-queue)]
+    (insert-queue! q1 :a)
+    (is (= "[:a]\n" (with-out-str (print-queue q1))))
+    (insert-queue! q1 :b)
+    (is (= "[:a :b]\n" (with-out-str (print-queue q1))))
+    (delete-queue! q1)
+    (is (= "[:b]\n" (with-out-str (print-queue q1))))
+    (delete-queue! q1)
+    (is (= "[]\n" (with-out-str (print-queue q1))))))
 
 ;; Exercise 3.22
-;; TODO
+(deftest make-queue'-test
+  (let [q (make-queue')]
+    (is (true? ((q :empty-queue?))))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"FRONT called with an empty queue"
+                          ((q :front-queue))))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"DELETE called with an empty queue"
+                          ((q :delete-queue!))))
+    ((q :insert-queue!) :a)
+    (is (false? ((q :empty-queue?))))
+    (is (= :a ((q :front-queue))))
+    ((q :insert-queue!) :b)
+    ((q :delete-queue!))
+    (is (= :b ((q :front-queue))))
+    ((q :delete-queue!))
+    (is (true? ((q :empty-queue?))))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"Unknown operation"
+                          ((q :dummy))))))
 
 ;; Exercise 3.23
-;; TODO
+(deftest deque-test
+  (let [d (make-deque)]
+    (is (true? (empty-deque? d)))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"FRONT called with an empty deque"
+                          (front-deque d)))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"REAR called with an empty deque"
+                          (rear-deque d)))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"DELETE called with an empty deque"
+                          (front-delete-deque! d)))
+    (is (thrown-with-msg? IllegalArgumentException
+                          #"DELETE called with an empty deque"
+                          (rear-delete-deque! d)))
+    (front-insert-deque! d :a)
+    (is (false? (empty-deque? d)))
+    (is (= :a (front-deque d)))
+    (is (= :a (rear-deque d)))
+    (rear-insert-deque! d :b)
+    (is (= :a (front-deque d)))
+    (is (= :b (rear-deque d)))
+    (front-delete-deque! d)
+    (is (= :b (front-deque d)))
+    (is (= :b (rear-deque d)))
+    (rear-delete-deque! d)
+    (is (true? (empty-deque? d)))))
 
 ;;; 3.3.3  Representing Tables
 
 ;; Exercise 3.24
-;; TODO
+(deftest make-table''-test
+  (let [t (make-table'' :same-key? ==)]
+    (is (false? ((t :lookup-proc) 1 2)))
+    ((t :insert-proc!) 1 2 :a)
+    (is (= :a ((t :lookup-proc) 1 2)))
+    (is (= :a ((t :lookup-proc) 1.0 2.0)))
+    (is (false? ((t :lookup-proc) 1.0 2.1)))))
 
 ;; Exercise 3.25
-;; TODO
+(deftest multi-dimensional-table-test
+  (let [t (make-table''')]
+    (is (false? (lookup'' [:a] t)))
+    (is (false? (lookup'' [:a :b] t)))
+    (is (false? (lookup'' [:a :b :c] t)))
+    (insert!'' [:a] 1 t)
+    (is (= 1 (lookup'' [:a] t)))
+    (is (false? (lookup'' [:a :b] t)))
+    (is (false? (lookup'' [:a :b :c] t)))
+    (insert!'' [:a :b] 2 t)
+    (is (= 1 (lookup'' [:a] t)))
+    (is (= 2 (lookup'' [:a :b] t)))
+    (is (false? (lookup'' [:a :b :c] t)))
+    (insert!'' [:a :b :c] 3 t)
+    (is (= 1 (lookup'' [:a] t)))
+    (is (= 2 (lookup'' [:a :b] t)))
+    (is (= 3 (lookup'' [:a :b :c] t)))
+    (insert!'' [:a :b :d] 4 t)
+    (is (= 1 (lookup'' [:a] t)))
+    (is (= 2 (lookup'' [:a :b] t)))
+    ;; FIXME: (is (= 3 (lookup'' [:a :b :c] t)))
+    (is (= 4 (lookup'' [:a :b :d] t)))))
 
 ;;; 3.3.4  A Simulator for Digital Circuits
 
