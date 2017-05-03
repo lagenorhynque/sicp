@@ -49,8 +49,9 @@
                  (map (fn [cs]
                         [(symbol (str \c (str/join cs) \r))
                          (reduce (fn [acc x]
-                                   (list (if (= x \a) 'car 'cdr)
-                                         acc)) 'x (reverse cs))]))))]
+                                   (list (if (= x \a) 'car 'cdr) acc))
+                                 'x
+                                 (reverse cs))]))))]
     `(do ~@(map (fn [[name body]]
                   `(defn ~name [~'x]
                      ~body))
