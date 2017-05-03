@@ -976,30 +976,36 @@
     dispatch))
 
 ;; Exercise 3.25
-;; FIXME
+(defn make-table''' []
+  (scheme-like-list false))
+
+(defn assok' [key records]
+  (cond
+    (or (nil? records) (nil? (car records))) false
+    (= key (car (car records))) (car records)
+    :else (recur key (cdr records))))
+
 (defn lookup'' [keys table]
   (loop [keys keys
          table table]
-    (if-let [subtable (assok (first keys) (cdr table))]
-      (if (empty? (rest keys))
-        (cdr subtable)
-        (recur (rest keys) subtable))
-      false)))
+    (if (empty? keys)
+      (car table)
+      (if-let [subtable (assok' (first keys) (cdr table))]
+        (recur (rest keys) (cdr subtable))
+        false))))
 
-;; FIXME
 (defn insert!'' [keys value table]
   (loop [keys keys
          table table]
-    (if-let [subtable (assok (first keys) (cdr table))]
-      (if (empty? (rest keys))
-        (set-cdr! subtable value)
-        (recur (rest keys) subtable))
-      (set-cdr! table
-                (let [rkeys (reverse keys)]
-                  (kons (reduce #(scheme-like-list %2 %1)
-                                (kons (first rkeys) value)
-                                (rest rkeys))
-                        (cdr table))))))
+    (if (empty? keys)
+      (set-car! table value)
+      (if-let [subtable (assok' (first keys) (cdr table))]
+        (recur (rest keys) (cdr subtable))
+        (let [subtable (make-table''')]
+          (set-cdr! table
+                    (scheme-like-list (kons (first keys) subtable)
+                                      (cdr table)))
+          (recur (rest keys) subtable)))))
   :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
