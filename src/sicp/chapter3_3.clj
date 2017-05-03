@@ -976,21 +976,12 @@
     dispatch))
 
 ;; Exercise 3.25
-(defn make-table''' []
-  (scheme-like-list false))
-
-(defn assok' [key records]
-  (cond
-    (or (nil? records) (nil? (car records))) false
-    (= key (car (car records))) (car records)
-    :else (recur key (cdr records))))
-
 (defn lookup'' [keys table]
   (loop [keys keys
          table table]
     (if (empty? keys)
       (car table)
-      (if-let [subtable (assok' (first keys) (cdr table))]
+      (if-let [subtable (assok (first keys) (cdr table))]
         (recur (rest keys) (cdr subtable))
         false))))
 
@@ -999,13 +990,12 @@
          table table]
     (if (empty? keys)
       (set-car! table value)
-      (if-let [subtable (assok' (first keys) (cdr table))]
+      (if-let [subtable (assok (first keys) (cdr table))]
         (recur (rest keys) (cdr subtable))
-        (let [subtable (make-table''')]
-          (set-cdr! table
-                    (scheme-like-list (kons (first keys) subtable)
-                                      (cdr table)))
-          (recur (rest keys) subtable)))))
+        (do (set-cdr! table
+                      (kons (scheme-like-list (first keys) false)
+                            (cdr table)))
+            (recur (rest keys) (cdr (car (cdr table))))))))
   :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
