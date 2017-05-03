@@ -700,7 +700,303 @@
 
 ;;; 3.3.2  Representing Queues
 
+(defn front-ptr [queue]
+  (car queue))
+(defn rear-ptr [queue]
+  (cdr queue))
+(defn set-front-ptr! [queue item]
+  (set-car! queue item))
+(defn set-rear-ptr! [queue item]
+  (set-cdr! queue item))
+
+(defn empty-queue? [queue]
+  (nil? (front-ptr queue)))
+
+(defn make-queue []
+  (kons nil nil))
+
+(defn front-queue [queue]
+  (if (empty-queue? queue)
+    (throw (IllegalArgumentException.
+            (str "FRONT called with an empty queue " queue)))
+    (car (front-ptr queue))))
+
+(defn insert-queue! [queue item]
+  (let [new-pair (kons item nil)]
+    (if (empty-queue? queue)
+      (do (set-front-ptr! queue new-pair)
+          (set-rear-ptr! queue new-pair))
+      (do (set-cdr! (rear-ptr queue) new-pair)
+          (set-rear-ptr! queue new-pair)))
+    queue))
+
+(defn delete-queue! [queue]
+  (if (empty-queue? queue)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty queue " queue)))
+    (do (set-front-ptr! queue (cdr (front-ptr queue)))
+        queue)))
+
+;; Exercise 3.21
+(defn queue->vector [queue]
+  (loop [coll (front-ptr queue)
+         v []]
+    (if (nil? coll)
+      v
+      (recur (cdr coll) (conj v (car coll))))))
+
+(defn print-queue [queue]
+  (println (queue->vector queue)))
+
+;; Exercise 3.22
+(defn make-queue' []
+  (let [front-ptr (atom nil)
+        rear-ptr (atom nil)
+        empty-queue? (fn []
+                       (nil? @front-ptr))
+        front-queue (fn []
+                      (if (empty-queue?)
+                        (throw (IllegalArgumentException.
+                                (str "FRONT called with an empty queue "
+                                     @front-ptr)))
+                        (car @front-ptr)))
+        insert-queue! (fn [item]
+                        (let [new-pair (kons item nil)]
+                          (if (empty-queue?)
+                            (do (reset! front-ptr new-pair)
+                                (reset! rear-ptr new-pair))
+                            (do (set-cdr! @rear-ptr new-pair)
+                                (reset! rear-ptr new-pair)))
+                          @front-ptr))
+        delete-queue! (fn []
+                        (if (empty-queue?)
+                          (throw (IllegalArgumentException.
+                                  (str "DELETE called with an empty queue "
+                                       @front-ptr)))
+                          (do (reset! front-ptr (cdr @front-ptr))
+                              @front-ptr)))
+        dispatch (fn [m]
+                   (case m
+                     :empty-queue? empty-queue?
+                     :front-queue front-queue
+                     :insert-queue! insert-queue!
+                     :delete-queue! delete-queue!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation " m)))))]
+    dispatch))
+
+;; Exercise 3.23
+(defn make-deque []
+  (kons nil nil))
+
+(defn empty-deque? [deque]
+  (nil? (front-ptr deque)))
+
+(defn deque-element [item]
+  (scheme-like-list item nil nil))
+(defn deque-item [deque]
+  (car deque))
+(defn deque-next [deque]
+  (car (cdr deque)))
+(defn deque-previous [deque]
+  (car (cdr (cdr deque))))
+(defn set-deque-next! [deque ptr]
+  (set-car! (cdr deque) ptr))
+(defn set-deque-previous! [deque ptr]
+  (set-car! (cdr (cdr deque)) ptr))
+
+(defn deque->vector [deque]
+  (loop [coll (front-ptr deque)
+         v []]
+    (if (nil? coll)
+      v
+      (recur (deque-next coll) (conj v (deque-item coll))))))
+
+(defn front-deque [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "FRONT called with an empty deque "
+                 (deque->vector deque))))
+    (deque-item (front-ptr deque))))
+
+(defn rear-deque [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "REAR called with an empty deque "
+                 (deque->vector deque))))
+    (deque-item (rear-ptr deque))))
+
+(defn front-insert-deque! [deque item]
+  (let [new-elem (deque-element item)]
+    (if (empty-deque? deque)
+      (do (set-front-ptr! deque new-elem)
+          (set-rear-ptr! deque new-elem))
+      (do (set-deque-next! new-elem (front-ptr deque))
+          (set-deque-previous! (front-ptr deque) new-elem)
+          (set-front-ptr! deque new-elem)))
+    (deque->vector deque)))
+
+(defn rear-insert-deque! [deque item]
+  (let [new-elem (deque-element item)]
+    (if (empty-deque? deque)
+      (do (set-front-ptr! deque new-elem)
+          (set-rear-ptr! deque new-elem))
+      (do (set-deque-next! (rear-ptr deque) new-elem)
+          (set-deque-previous! new-elem (rear-ptr deque))
+          (set-rear-ptr! deque new-elem)))
+    (deque->vector deque)))
+
+(defn front-delete-deque! [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty deque "
+                 (deque->vector deque))))
+    (do (if-let [next (deque-next (front-ptr deque))]
+          (do (set-deque-previous! next nil)
+              (set-front-ptr! deque next))
+          (do (set-front-ptr! deque nil)
+              (set-rear-ptr! deque nil)))
+        (deque->vector deque))))
+
+(defn rear-delete-deque! [deque]
+  (if (empty-deque? deque)
+    (throw (IllegalArgumentException.
+            (str "DELETE called with an empty deque "
+                 (deque->vector deque))))
+    (do (if-let [previous (deque-previous (rear-ptr deque))]
+          (do (set-deque-next! previous nil)
+              (set-rear-ptr! deque previous))
+          (do (set-front-ptr! deque nil)
+              (set-rear-ptr! deque nil)))
+        (deque->vector deque))))
+
 ;;; 3.3.3  Representing Tables
+
+(defn assok [key records]
+  (cond
+    (nil? records) false
+    (= key (car (car records))) (car records)
+    :else (recur key (cdr records))))
+
+(defn lookup [key table]
+  (if-let [record (assok key (cdr table))]
+    (cdr record)
+    false))
+
+(defn insert! [key value table]
+  (if-let [record (assok key (cdr table))]
+    (set-cdr! record value)
+    (set-cdr! table
+              (kons (kons key value) (cdr table))))
+  :ok)
+
+(defn make-table []
+  (scheme-like-list '*table*))
+
+(defn lookup' [key-1 key-2 table]
+  (if-let [subtable (assok key-1 (cdr table))]
+    (if-let [record (assok key-2 (cdr subtable))]
+      (cdr record)
+      false)
+    false))
+
+(defn insert!' [key-1 key-2 value table]
+  (if-let [subtable (assok key-1 (cdr table))]
+    (if-let [record (assok key-2 (cdr subtable))]
+      (set-cdr! record value)
+      (set-cdr! subtable
+                (kons (kons key-2 value)
+                      (cdr subtable))))
+    (set-cdr! table
+              (kons (scheme-like-list key-1
+                                      (kons key-2 value))
+                    (cdr table))))
+  :ok)
+
+(defn make-table' []
+  (let [local-table (scheme-like-list '*table*)
+        lookup (fn [key-1 key-2]
+                 (if-let [subtable (assok key-1 (cdr local-table))]
+                   (if-let [record (assok key-2 (cdr subtable))]
+                     (cdr record)
+                     false)
+                   false))
+        insert! (fn [key-1 key-2 value]
+                  (if-let [subtable (assok key-1 (cdr local-table))]
+                    (if-let [record (assok key-2 (cdr subtable))]
+                      (set-cdr! record value)
+                      (set-cdr! subtable
+                                (kons (kons key-2 value)
+                                      (cdr subtable))))
+                    (set-cdr! local-table
+                              (kons (scheme-like-list key-1
+                                                      (kons key-2 value))
+                                    (cdr local-table))))
+                  :ok)
+        dispatch (fn [m]
+                   (case m
+                     :lookup-proc lookup
+                     :insert-proc! insert!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation -- TABLE " m)))))]
+    dispatch))
+
+;; Exercise 3.24
+(defn make-table'' [& {:keys [same-key?] :or {same-key? =}}]
+  (let [local-table (scheme-like-list '*table*)
+        assok (fn assok [key records]
+                (cond
+                  (nil? records) false
+                  (same-key? key (car (car records))) (car records)
+                  :else (recur key (cdr records))))
+        lookup (fn [key-1 key-2]
+                 (if-let [subtable (assok key-1 (cdr local-table))]
+                   (if-let [record (assok key-2 (cdr subtable))]
+                     (cdr record)
+                     false)
+                   false))
+        insert! (fn [key-1 key-2 value]
+                  (if-let [subtable (assok key-1 (cdr local-table))]
+                    (if-let [record (assok key-2 (cdr subtable))]
+                      (set-cdr! record value)
+                      (set-cdr! subtable
+                                (kons (kons key-2 value)
+                                      (cdr subtable))))
+                    (set-cdr! local-table
+                              (kons (scheme-like-list key-1
+                                                      (kons key-2 value))
+                                    (cdr local-table))))
+                  :ok)
+        dispatch (fn [m]
+                   (case m
+                     :lookup-proc lookup
+                     :insert-proc! insert!
+                     (throw (IllegalArgumentException.
+                             (str "Unknown operation -- TABLE " m)))))]
+    dispatch))
+
+;; Exercise 3.25
+(defn lookup'' [keys table]
+  (loop [keys keys
+         table table]
+    (if (empty? keys)
+      (car table)
+      (if-let [subtable (assok (first keys) (cdr table))]
+        (recur (rest keys) (cdr subtable))
+        false))))
+
+(defn insert!'' [keys value table]
+  (loop [keys keys
+         table table]
+    (if (empty? keys)
+      (set-car! table value)
+      (if-let [subtable (assok (first keys) (cdr table))]
+        (recur (rest keys) (cdr subtable))
+        (do (set-cdr! table
+                      (kons (scheme-like-list (first keys) false)
+                            (cdr table)))
+            (recur (rest keys) (cdr (car (cdr table))))))))
+  :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
 
