@@ -507,9 +507,9 @@
             (cond
               (identical? a b) true
               (or (nil? (cdr a))
-                  (nil? (cdr (cdr b)))) false
+                  (nil? (cddr b))) false
               :else (recur (cdr a)
-                           (cdr (cdr b)))))]
+                           (cddr b))))]
     (if (and (pair? x)
              (pair? (cdr x)))
       (f x (cdr x))
@@ -797,13 +797,13 @@
 (defn deque-item [deque]
   (car deque))
 (defn deque-next [deque]
-  (car (cdr deque)))
+  (cadr deque))
 (defn deque-previous [deque]
-  (car (cdr (cdr deque))))
+  (caddr deque))
 (defn set-deque-next! [deque ptr]
   (set-car! (cdr deque) ptr))
 (defn set-deque-previous! [deque ptr]
-  (set-car! (cdr (cdr deque)) ptr))
+  (set-car! (cddr deque) ptr))
 
 (defn deque->vector [deque]
   (loop [coll (front-ptr deque)
@@ -875,7 +875,7 @@
 (defn assok [key records]
   (cond
     (nil? records) false
-    (= key (car (car records))) (car records)
+    (= key (caar records)) (car records)
     :else (recur key (cdr records))))
 
 (defn lookup [key table]
@@ -947,7 +947,7 @@
         assok (fn assok [key records]
                 (cond
                   (nil? records) false
-                  (same-key? key (car (car records))) (car records)
+                  (same-key? key (caar records)) (car records)
                   :else (recur key (cdr records))))
         lookup (fn [key-1 key-2]
                  (if-let [subtable (assok key-1 (cdr local-table))]
@@ -995,7 +995,7 @@
         (do (set-cdr! table
                       (kons (scheme-like-list (first keys) false)
                             (cdr table)))
-            (recur (rest keys) (cdr (car (cdr table))))))))
+            (recur (rest keys) (cdadr table))))))
   :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits

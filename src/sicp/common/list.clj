@@ -1,4 +1,6 @@
-(ns sicp.common.list)
+(ns sicp.common.list
+  (:require [clojure.math.combinatorics :as comb]
+            [clojure.string :as str]))
 
 (defprotocol SchemeLikeList
   (car [this])
@@ -40,3 +42,17 @@
 
 (defn pair? [x]
   (satisfies? SchemeLikeList x))
+
+(defmacro def-cxrs [from to]
+  (letfn [(f [n]
+            (->> (comb/selections [\a \d] n)
+                 (map (fn [cs]
+                        [(symbol (str \c (str/join cs) \r))
+                         (reduce (fn [acc x]
+                                   (list (if (= x \a) 'car 'cdr)
+                                         acc)) 'x (reverse cs))]))))]
+    `(do ~@(map (fn [[name body]]
+                  `(defn ~name [~'x]
+                     ~body))
+                (mapcat f (range from (inc to)))))))
+(def-cxrs 2 4)
