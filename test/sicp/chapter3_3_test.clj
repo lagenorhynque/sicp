@@ -184,6 +184,51 @@
     (is (= 6 (lookup'' [:a :b :c] t)))
     (is (= 5 (lookup'' [:a :b :d] t)))))
 
-;;; 3.3.4  A Simulator for Digital Circuits
+;;; Exercise 3.26
+(deftest multi-dimensional-table-with-bst-test
+  (let [t (make-table)]
+    (is (false? (lookup''' [:a] t)))
+    (is (false? (lookup''' [:b] t)))
+    (is (false? (lookup''' [:a :b] t)))
+    (is (false? (lookup''' [:a :b :c] t)))
+    (is (false? (lookup''' [:a :b :d] t)))
+    (insert!''' [:a] 1 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (false? (lookup''' [:b] t)))
+    (is (false? (lookup''' [:a :b] t)))
+    (is (false? (lookup''' [:a :b :c] t)))
+    (is (false? (lookup''' [:a :b :d] t)))
+    (insert!''' [:b] 2 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (= 2 (lookup''' [:b] t)))
+    (is (false? (lookup''' [:a :b] t)))
+    (is (false? (lookup''' [:a :b :c] t)))
+    (is (false? (lookup''' [:a :b :d] t)))
+    (insert!''' [:a :b] 3 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (= 2 (lookup''' [:b] t)))
+    (is (= 3 (lookup''' [:a :b] t)))
+    (is (false? (lookup''' [:a :b :c] t)))
+    (is (false? (lookup''' [:a :b :d] t)))
+    (insert!''' [:a :b :c] 4 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (= 2 (lookup''' [:b] t)))
+    (is (= 3 (lookup''' [:a :b] t)))
+    (is (= 4 (lookup''' [:a :b :c] t)))
+    (is (false? (lookup''' [:a :b :d] t)))
+    (insert!''' [:a :b :d] 5 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (= 2 (lookup''' [:b] t)))
+    (is (= 3 (lookup''' [:a :b] t)))
+    (is (= 4 (lookup''' [:a :b :c] t)))
+    (is (= 5 (lookup''' [:a :b :d] t)))
+    (insert!''' [:a :b :c] 6 t)
+    (is (= 1 (lookup''' [:a] t)))
+    (is (= 2 (lookup''' [:b] t)))
+    (is (= 3 (lookup''' [:a :b] t)))
+    (is (= 6 (lookup''' [:a :b :c] t)))
+    (is (= 5 (lookup''' [:a :b :d] t)))))
+
+;; 3.3.4  A Simulator for Digital Circuits
 
 ;;; 3.3.5  Propagation of Constraints

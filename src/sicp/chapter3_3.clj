@@ -992,10 +992,69 @@
       (set-car! table value)
       (if-let [subtable (assok (first keys) (cdr table))]
         (recur (rest keys) (cdr subtable))
-        (do (set-cdr! table
-                      (kons (scheme-like-list (first keys) false)
-                            (cdr table)))
-            (recur (rest keys) (cdadr table))))))
+        (let [subtable (scheme-like-list (first keys) false)]
+          (set-cdr! table (kons subtable (cdr table)))
+          (recur (rest keys) (cdr subtable))))))
+  :ok)
+
+;; Exercise 3.26
+(defn new-node [key]
+  (scheme-like-list key nil nil false))
+(defn node-key [node]
+  (car node))
+(defn node-left [node]
+  (cadr node))
+(defn node-right [node]
+  (caddr node))
+(defn node-subtree [node]
+  (cdddr node))
+(defn set-node-left! [node value]
+  (set-car! (cdr node) value))
+(defn set-node-right! [node value]
+  (set-car! (cddr node) value))
+
+(defn search-node [key tree]
+  (if (nil? tree)
+    false
+    (let [k (node-key tree)]
+      (cond
+        (neg? (compare key k)) (recur key (node-left tree))
+        (pos? (compare key k)) (recur key (node-right tree))
+        :else tree))))
+
+(defn lookup''' [keys table]
+  (loop [keys keys
+         table table]
+    (if (empty? keys)
+      (car table)
+      (if-let [subtable (search-node (first keys) (cdr table))]
+        (recur (rest keys) (node-subtree subtable))
+        false))))
+
+(defn insert-node! [node tree]
+  (if (nil? tree)
+    node
+    (let [nk (node-key node)
+          tk (node-key tree)]
+      (cond
+        (neg? (compare nk tk)) (set-node-left!
+                                tree
+                                (insert-node! node (node-left tree)))
+        (pos? (compare nk tk)) (set-node-right!
+                                tree
+                                (insert-node! node (node-right tree))))
+      tree)))
+
+(defn insert!''' [keys value table]
+  (loop [keys keys
+         table table]
+    (if (empty? keys)
+      (set-car! table value)
+      (if-let [subtable (search-node (first keys) (cdr table))]
+        (recur (rest keys) (node-subtree subtable))
+        (let [subtable (new-node (first keys))]
+          (set-cdr! table (insert-node! subtable (cdr table)))
+          (recur (rest keys) (node-subtree subtable))))))
   :ok)
 
 ;;; 3.3.4  A Simulator for Digital Circuits
