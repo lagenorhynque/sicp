@@ -45,13 +45,12 @@
 
 (defmacro def-cxrs [from to]
   (letfn [(f [n]
-            (->> (comb/selections [\a \d] n)
-                 (map (fn [cs]
-                        [(symbol (str \c (str/join cs) \r))
-                         (reduce (fn [acc x]
-                                   (list (if (= x \a) 'car 'cdr) acc))
-                                 'x
-                                 (reverse cs))]))))]
+            (map (fn [cs]
+                   [(symbol (str \c (str/join cs) \r))
+                    (reduce #(list ({\a 'car \d 'cdr} %2) %1)
+                            'x
+                            (reverse cs))])
+                 (comb/selections [\a \d] n)))]
     `(do ~@(map (fn [[name body]]
                   `(defn ~name [~'x]
                      ~body))
