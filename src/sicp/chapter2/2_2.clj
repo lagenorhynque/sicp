@@ -1,4 +1,5 @@
-(ns sicp.chapter2.2-2)
+(ns sicp.chapter2.2-2
+  (:require [sicp.chapter2.2-1 :refer [reverse']]))
 
 ;;;; 2.2  Hierarchical Data and the Closure Property
 
