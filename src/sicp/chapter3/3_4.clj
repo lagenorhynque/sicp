@@ -6,7 +6,26 @@
 
 (declare get-signal set-signal! add-action!
          after-delay inverter-delay and-gate-delay or-gate-delay
-         make-wire)
+         make-wire
+         or-gate and-gate inverter)
+
+(defn half-adder [a b s c]
+  (let [d (make-wire)
+        e (make-wire)]
+    (or-gate a b d)
+    (and-gate a b c)
+    (inverter c e)
+    (and-gate d e s)
+    :ok))
+
+(defn full-adder [a b c-in sum c-out]
+  (let [s (make-wire)
+        c1 (make-wire)
+        c2 (make-wire)]
+    (half-adder b c-in s c1)
+    (half-adder a s sum c2)
+    (or-gate c1 c2 c-out)
+    :ok))
 
 (defn logical-not [s]
   (case s
@@ -73,3 +92,21 @@
     :ok))
 
 ;; the delay time of or-gate' = 2 * inverter-delay + and-gate-delay
+
+;; Exercise 3.30
+(defn ripple-carry-adder [as bs ss c]
+  (loop [[a & as] as
+         [b & bs] bs
+         [c-in & cs] (repeat (make-wire))
+         [s & ss] ss
+         c-out c]
+    (when a
+      (full-adder a b c-in s c-out)
+      (recur as bs cs ss c-in)))
+  :ok)
+
+;; Exercise 3.31
+;; TODO
+
+;; Exercise 3.32
+;; TODO
