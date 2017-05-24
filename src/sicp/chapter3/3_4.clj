@@ -105,6 +105,40 @@
       (recur as bs cs ss c-in)))
   :ok)
 
+(defn call-each [procedures]
+  (loop [[p & ps] procedures]
+    (when p
+      (p)
+      (recur ps)))
+  :done)
+
+(defn make-wire []
+  (let [signal-value (atom 0)
+        action-procedures (atom ())]
+    (letfn [(set-my-signal! [new-value]
+              (if (not= @signal-value new-value)
+                (do (reset! signal-value new-value)
+                    (call-each @action-procedures))
+                :done))
+            (accept-action-procedure! [proc]
+              (swap! action-procedures conj proc)
+              (proc))
+            (dispatch [m]
+              (case m
+                :get-signal @signal-value
+                :set-signal! set-my-signal!
+                :add-action! accept-action-procedure!
+                (throw (IllegalArgumentException.
+                        (str "Unknown operation -- WIRE " m)))))]
+      dispatch)))
+
+(defn get-signal [wire]
+  (wire :get-signal))
+(defn set-signal! [wire new-value]
+  ((wire :set-signal!) new-value))
+(defn add-action! [wire action-procedure]
+  ((wire :add-action!) action-procedure))
+
 ;; Exercise 3.31
 ;; TODO
 
