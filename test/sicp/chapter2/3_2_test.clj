@@ -1,21 +1,21 @@
 (ns sicp.chapter2.3-2-test
-  (:require [clojure.test :refer :all]
-            [sicp.chapter2.3-2 :refer :all]))
+  (:require [clojure.test :as t]
+            [sicp.chapter2.3-2 :as sut]))
 
 ;;;; 2.3  Symbolic Data
 
 ;;; 2.3.2  Example: Symbolic Differentiation
 
-(deftest deriv-test
-  (is (= (deriv '(+ x 3) 'x) 1))
-  (is (= (deriv '(* x y) 'x) 'y))
-  (is (= (deriv '(* (* x y) (+ x 3)) 'x) '(+ (* x y) (* y (+ x 3))))))
+(t/deftest deriv-test
+  (t/is (= 1 (sut/deriv '(+ x 3) 'x)))
+  (t/is (= 'y (sut/deriv '(* x y) 'x)))
+  (t/is (= '(+ (* x y) (* y (+ x 3))) (sut/deriv '(* (* x y) (+ x 3)) 'x))))
 
 ;; Exercise 2.56
-(deftest deriv'-test
-  (is (= (deriv' '(** x 1) 'x) 1))
-  (is (= (deriv' '(** x 2) 'x) '(* 2 x)))
-  (is (= (deriv' '(** x 3) 'x) '(* 3 (** x 2)))))
+(t/deftest deriv'-test
+  (t/is (= 1 (sut/deriv' '(** x 1) 'x)))
+  (t/is (= '(* 2 x) (sut/deriv' '(** x 2) 'x)))
+  (t/is (= '(* 3 (** x 2)) (sut/deriv' '(** x 3) 'x))))
 
 ;; Exercise 2.57
 

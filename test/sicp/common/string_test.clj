@@ -1,42 +1,42 @@
 (ns sicp.common.string-test
-  (:require [clojure.test :refer :all]
-            [sicp.common.string :refer :all]))
+  (:require [clojure.test :as t]
+            [sicp.common.string :as sut]))
 
-(deftest strip-margin-test
-  (binding [*newline-char* "\n"]
-    (is (= "(defn factorial [n]
+(t/deftest strip-margin-test
+  (binding [sut/*newline-char* "\n"]
+    (t/is (= "(defn factorial [n]
                             (if (zero? n)
                               1
                               (* n (factorial (dec n)))))"
-           (strip-margin "(defn factorial [n]
+             (sut/strip-margin "(defn factorial [n]
                             (if (zero? n)
                               1
                               (* n (factorial (dec n)))))")))
 
-    (is (= "(defn factorial [n]
+    (t/is (= "(defn factorial [n]
   (if (zero? n)
     1
     (* n (factorial (dec n)))))"
-           (strip-margin "(defn factorial [n]
+             (sut/strip-margin "(defn factorial [n]
                          |  (if (zero? n)
                          |    1
                          |    (* n (factorial (dec n)))))")))
 
-    (is (= "(defn factorial [n]
+    (t/is (= "(defn factorial [n]
   (if (zero? n)
     1
     (* n (factorial (dec n)))))"
-           (strip-margin "|(defn factorial [n]
+             (sut/strip-margin "|(defn factorial [n]
                           |  (if (zero? n)
                           |    1
                           |    (* n (factorial (dec n)))))")))
 
-    (is (= "(defn factorial [n]
+    (t/is (= "(defn factorial [n]
   (if (zero? n)
     1
     (* n (factorial (dec n)))))"
-           (strip-margin "(defn factorial [n]
+             (sut/strip-margin "(defn factorial [n]
                          ;  (if (zero? n)
                          ;    1
                          ;    (* n (factorial (dec n)))))"
-                         ";")))))
+                               ";")))))

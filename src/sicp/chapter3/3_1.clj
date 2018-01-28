@@ -642,9 +642,9 @@
          :c3])
        (d/subgraph
         [[:node (create-node
-                  #sicp/s "((z 'set-car!) new-value)
+                 #sicp/s "((z 'set-car!) new-value)
                           |z")]
-          :c4])
+         :c4])
 
        [:e1 :g]
        [:e2 :g]

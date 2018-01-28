@@ -1,31 +1,31 @@
 (ns sicp.chapter2.3-3-test
-  (:require [clojure.test :refer :all]
-            [sicp.chapter2.3-3 :refer :all]))
+  (:require [clojure.test :as t]
+            [sicp.chapter2.3-3 :as sut]))
 
 ;;;; 2.3  Symbolic Data
 
 ;;; 2.3.3  Example: Representing Sets
 
-(deftest element-of-set?-test
-  (is (false? (element-of-set? 1 [])))
-  (is (true? (element-of-set? 1 [1 2 3])))
-  (is (true? (element-of-set? 3 [1 2 3])))
-  (is (false? (element-of-set? 2 [1 3]))))
+(t/deftest element-of-set?-test
+  (t/is (false? (sut/element-of-set? 1 [])))
+  (t/is (true? (sut/element-of-set? 1 [1 2 3])))
+  (t/is (true? (sut/element-of-set? 3 [1 2 3])))
+  (t/is (false? (sut/element-of-set? 2 [1 3]))))
 
-(deftest adjoin-set-test
-  (is (= #{1} (set (adjoin-set 1 []))))
-  (is (= #{1 2} (set (adjoin-set 2 [1])))))
+(t/deftest adjoin-set-test
+  (t/is (= #{1} (set (sut/adjoin-set 1 []))))
+  (t/is (= #{1 2} (set (sut/adjoin-set 2 [1])))))
 
-(deftest intersection-set-test
-  (is (= #{} (set (intersection-set [] []))))
-  (is (= #{} (set (intersection-set [1] []))))
-  (is (= #{} (set (intersection-set [] [1]))))
-  (is (= #{2} (set (intersection-set [1 2 3] [2]))))
-  (is (= #{2} (set (intersection-set [2] [1 2 3])))))
+(t/deftest intersection-set-test
+  (t/is (= #{} (set (sut/intersection-set [] []))))
+  (t/is (= #{} (set (sut/intersection-set [1] []))))
+  (t/is (= #{} (set (sut/intersection-set [] [1]))))
+  (t/is (= #{2} (set (sut/intersection-set [1 2 3] [2]))))
+  (t/is (= #{2} (set (sut/intersection-set [2] [1 2 3])))))
 
-(deftest union-set-test
-  (is (= #{} (set (union-set [] []))))
-  (is (= #{1} (set (union-set [1] []))))
-  (is (= #{1} (set (union-set [] [1]))))
-  (is (= #{1 2 3} (set (union-set [1 3] [2]))))
-  (is (= #{1 2 3} (set (union-set [2] [1 3])))))
+(t/deftest union-set-test
+  (t/is (= #{} (set (sut/union-set [] []))))
+  (t/is (= #{1} (set (sut/union-set [1] []))))
+  (t/is (= #{1} (set (sut/union-set [] [1]))))
+  (t/is (= #{1 2 3} (set (sut/union-set [1 3] [2]))))
+  (t/is (= #{1 2 3} (set (sut/union-set [2] [1 3])))))
