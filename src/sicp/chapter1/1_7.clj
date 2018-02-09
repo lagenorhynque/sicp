@@ -33,7 +33,37 @@
 (square (sqrt 1000))
 
 ;; Exercise 1.6
-;; TODO
+(defn new-if [predicate then-clause else-clause]
+  (cond predicate then-clause
+        :else else-clause))
+
+(new-if (= 2 3) 0 5)
+
+(new-if (= 1 1) 0 5)
+
+(defn square-iter' [guess x]
+  (new-if (good-enough? guess x)
+          guess
+          (square-iter' (improve guess x)
+                        x)))
+
+;; > (square-iter' 1.0 2)
+;; java.lang.StackOverflowError
+;;
+;; Reason: Since all the argments of `new-if` are always evaluated even if `predicate` is evaluated to false,
+;;   recursion does not stop forever. You can control evaluation of arguments using macros as follows:
+
+(defmacro new-if' [predicate then-clause else-clause]
+  `(cond ~predicate ~then-clause
+         :else ~else-clause))
+
+(defn square-iter'' [guess x]
+  (new-if' (good-enough? guess x)
+           guess
+           (square-iter'' (improve guess x)
+                          x)))
+
+(square-iter'' 1.0 2)
 
 ;; Exercise 1.7
 ;; TODO
