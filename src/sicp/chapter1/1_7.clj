@@ -1,5 +1,6 @@
 (ns sicp.chapter1.1-7
-  (:require [sicp.chapter1.1-4 :refer [square]]
+  (:require [clojure.math.numeric-tower :refer [expt]]
+            [sicp.chapter1.1-4 :refer [square]]
             [sicp.chapter1.1-6 :refer [abs]]))
 
 ;;;; 1.1  The Elements of Programming
@@ -88,4 +89,20 @@
   (square-iter'' 0 1.0 x))
 
 ;; Exercise 1.8
-;; TODO
+(defn good-enough-cbrt? [guess x]
+  (< (abs (- (expt guess 3) x))
+     0.001))
+
+(defn improve-cbrt [guess x]
+  (/ (+ (/ x (square guess))
+        (* 2 guess))
+     3))
+
+(defn cbrt-iter [guess x]
+  (if (good-enough-cbrt? guess x)
+    guess
+    (recur (improve-cbrt guess x)
+           x)))
+
+(defn cbrt [x]
+  (cbrt-iter 1.0 x))
