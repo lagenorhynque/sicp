@@ -42,10 +42,30 @@
 (count-change 100)
 
 ;; Exercise 1.11
-;; TODO
+;; recursive process
+(defn f [n]
+  (if (< n 3) n
+      (+ (f (- n 1))
+         (* 2 (f (- n 2)))
+         (* 3 (f (- n 3))))))
+
+;; iterative process
+;; a <- (+ a (* 2 b) (* 3 c))
+;; b <- a
+;; c <- b
+(defn f' [n]
+  (letfn [(f-iter [a b c cnt]
+             (if (zero? cnt)
+               c
+               (recur (+ a
+                         (* 2 b)
+                         (* 3 c))
+                      a
+                      b
+                      (dec cnt))))]
+    (f-iter 2 1 0 n)))
 
 ;; Exercise 1.12
-
 ;; TODO
 
 ;; Exercise 1.13
