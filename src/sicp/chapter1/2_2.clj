@@ -66,7 +66,12 @@
     (f-iter 2 1 0 n)))
 
 ;; Exercise 1.12
-;; TODO
+(defn pascals-triangle [n k]
+  {:pre [(<= 0 k n)]}
+  (if (or (zero? k) (== n k))
+    1
+    (+ (pascals-triangle (dec n) (dec k))
+       (pascals-triangle (dec n) k))))
 
 ;; Exercise 1.13
 ;; TODO
