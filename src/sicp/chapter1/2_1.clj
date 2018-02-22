@@ -83,8 +83,10 @@
 ;; f(n) = 2n
 
 (defn g [n] (A 1 n))
-;; g(n) = 2^n
+;; g(n) = 0   if n = 0
+;;        2^n otherwise
 
 (defn h [n] (A 2 n))
-;; h(n) = 2          if n = 1
+;; h(n) = 0          if n = 0
+;;        2          if n = 1
 ;;        2 ^ h(n-1) otherwise
