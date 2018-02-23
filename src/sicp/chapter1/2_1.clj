@@ -6,7 +6,7 @@
 
 (defn factorial [n]
   (if (== n 1)
-    1
+    1N
     (* n (factorial (dec n)))))
 
 (factorial 6)
@@ -19,7 +19,7 @@
            max-count)))
 
 (defn factorial' [n]
-  (factorial-iter 1 1 n))
+  (factorial-iter 1N 1 n))
 
 (factorial' 6)
 

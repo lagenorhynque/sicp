@@ -44,10 +44,11 @@
 ;; Exercise 1.11
 ;; recursive process
 (defn f [n]
-  (if (< n 3) n
-      (+ (f (- n 1))
-         (* 2 (f (- n 2)))
-         (* 3 (f (- n 3))))))
+  (if (< n 3)
+    n
+    (+ (f (- n 1))
+       (* 2 (f (- n 2)))
+       (* 3 (f (- n 3))))))
 
 ;; iterative process
 ;; a <- (+ a (* 2 b) (* 3 c))

@@ -16,14 +16,14 @@
 (defn improve [guess x]
   (average guess (/ x guess)))
 
-(defn square-iter [guess x]
+(defn sqrt-iter [guess x]
   (if (good-enough? guess x)
     guess
     (recur (improve guess x)
            x)))
 
 (defn sqrt [x]
-  (square-iter 1.0 x))
+  (sqrt-iter 1.0 x))
 
 (sqrt 9)
 
@@ -42,13 +42,13 @@
 
 (new-if (== 1 1) 0 5)
 
-(defn square-iter' [guess x]
+(defn sqrt-iter' [guess x]
   (new-if (good-enough? guess x)
           guess
-          (square-iter' (improve guess x)
-                        x)))
+          (sqrt-iter' (improve guess x)
+                      x)))
 
-;; > (square-iter' 1.0 2)
+;; > (sqrt-iter' 1.0 2)
 ;; java.lang.StackOverflowError
 ;;
 ;; Reason: Since all the arguments of `new-if` are always evaluated even if `predicate` is evaluated to false,
@@ -58,13 +58,13 @@
   `(cond ~predicate ~then-clause
          :else ~else-clause))
 
-(defn square-iter'' [guess x]
+(defn sqrt-iter'' [guess x]
   (new-if' (good-enough? guess x)
            guess
-           (square-iter'' (improve guess x)
-                          x)))
+           (sqrt-iter'' (improve guess x)
+                        x)))
 
-(square-iter'' 1.0 2)
+(sqrt-iter'' 1.0 2)
 
 ;; Exercise 1.7
 ;; When applied to very small numbers,
@@ -78,7 +78,7 @@
 (defn good-enough?' [old-guess new-guess]
   (< (abs (- old-guess new-guess)) 0.001))
 
-(defn square-iter'' [old-guess new-guess x]
+(defn sqrt-iter''' [old-guess new-guess x]
   (if (good-enough?' old-guess new-guess)
     new-guess
     (recur new-guess
@@ -86,7 +86,7 @@
            x)))
 
 (defn sqrt' [x]
-  (square-iter'' 0 1.0 x))
+  (sqrt-iter''' 0 1.0 x))
 
 ;; Exercise 1.8
 (defn good-enough-cbrt? [guess x]
