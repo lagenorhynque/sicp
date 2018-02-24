@@ -1,4 +1,5 @@
-(ns sicp.chapter1.2-3)
+(ns sicp.chapter1.2-3
+  (:require [clojure.math.numeric-tower :refer [abs]]))
 
 ;;;; 1.2  Procedures and the Processes They Generate
 
@@ -123,4 +124,88 @@
 ;; the order of growth in number of steps: Θ(n^5)
 
 ;; Exercise 1.15
-;; TODO
+(defn cube [x] (* x x x))
+(defn p [x] (- (* 3 x) (* 4 (cube x))))
+(defn sine [angle]
+  (if (not (> (abs angle) 0.1))
+    angle
+    (p (sine (/ angle 3.0)))))
+
+(sine 12.15)
+
+;; tracing `p` with cider-toggle-trace-var
+;; sicp.chapter1.2-3> (sine 12.15)
+;; TRACE t16132: (sicp.chapter1.2-3/p 0.049999999999999996)
+;; TRACE t16132: => 0.1495
+;; TRACE t16133: (sicp.chapter1.2-3/p 0.1495)
+;; TRACE t16133: => 0.4351345505
+;; TRACE t16134: (sicp.chapter1.2-3/p 0.4351345505)
+;; TRACE t16134: => 0.9758465331678772
+;; TRACE t16135: (sicp.chapter1.2-3/p 0.9758465331678772)
+;; TRACE t16135: => -0.7895631144708228
+;; TRACE t16136: (sicp.chapter1.2-3/p -0.7895631144708228)
+;; TRACE t16136: => -0.39980345741334
+;; -0.39980345741334
+;;
+;; a.
+;;   5 times
+;;
+;; tracing `sine` with cider-toggle-trace-var
+;; sicp.chapter1.2-3> (sine 12.15)
+;; TRACE t16102: (sicp.chapter1.2-3/sine 12.15)
+;; TRACE t16103: | (sicp.chapter1.2-3/sine 4.05)
+;; TRACE t16104: | | (sicp.chapter1.2-3/sine 1.3499999999999999)
+;; TRACE t16105: | | | (sicp.chapter1.2-3/sine 0.44999999999999996)
+;; TRACE t16106: | | | | (sicp.chapter1.2-3/sine 0.15)
+;; TRACE t16107: | | | | | (sicp.chapter1.2-3/sine 0.049999999999999996)
+;; TRACE t16107: | | | | | => 0.049999999999999996
+;; TRACE t16106: | | | | => 0.1495
+;; TRACE t16105: | | | => 0.4351345505
+;; TRACE t16104: | | => 0.9758465331678772
+;; TRACE t16103: | => -0.7895631144708228
+;; TRACE t16102: => -0.39980345741334
+;; -0.39980345741334
+;; sicp.chapter1.2-3> (sine 121.5)
+;; TRACE t16110: (sicp.chapter1.2-3/sine 121.5)
+;; TRACE t16111: | (sicp.chapter1.2-3/sine 40.5)
+;; TRACE t16112: | | (sicp.chapter1.2-3/sine 13.5)
+;; TRACE t16113: | | | (sicp.chapter1.2-3/sine 4.5)
+;; TRACE t16114: | | | | (sicp.chapter1.2-3/sine 1.5)
+;; TRACE t16115: | | | | | (sicp.chapter1.2-3/sine 0.5)
+;; TRACE t16116: | | | | | | (sicp.chapter1.2-3/sine 0.16666666666666666)
+;; TRACE t16117: | | | | | | | (sicp.chapter1.2-3/sine 0.05555555555555555)
+;; TRACE t16117: | | | | | | | => 0.05555555555555555
+;; TRACE t16116: | | | | | | => 0.16598079561042522
+;; TRACE t16115: | | | | | => 0.4796515524505468
+;; TRACE t16114: | | | | => 0.997549345951195
+;; TRACE t16113: | | | => -0.9780161231523348
+;; TRACE t16112: | | => 0.8079021000407098
+;; TRACE t16111: | => 0.3144167435037848
+;; TRACE t16110: => 0.818919928903895
+;; 0.818919928903895
+;; sicp.chapter1.2-3> (sine 1215)
+;; TRACE t16120: (sicp.chapter1.2-3/sine 1215)
+;; TRACE t16121: | (sicp.chapter1.2-3/sine 405.0)
+;; TRACE t16122: | | (sicp.chapter1.2-3/sine 135.0)
+;; TRACE t16123: | | | (sicp.chapter1.2-3/sine 45.0)
+;; TRACE t16124: | | | | (sicp.chapter1.2-3/sine 15.0)
+;; TRACE t16125: | | | | | (sicp.chapter1.2-3/sine 5.0)
+;; TRACE t16126: | | | | | | (sicp.chapter1.2-3/sine 1.6666666666666667)
+;; TRACE t16127: | | | | | | | (sicp.chapter1.2-3/sine 0.5555555555555556)
+;; TRACE t16128: | | | | | | | | (sicp.chapter1.2-3/sine 0.1851851851851852)
+;; TRACE t16129: | | | | | | | | | (sicp.chapter1.2-3/sine 0.0617283950617284)
+;; TRACE t16129: | | | | | | | | | => 0.0617283950617284
+;; TRACE t16128: | | | | | | | | => 0.18424434697360575
+;; TRACE t16127: | | | | | | | => 0.527715621699182
+;; TRACE t16126: | | | | | | => 0.9953059062333508
+;; TRACE t16125: | | | | | => -0.9580171565672959
+;; TRACE t16124: | | | | => 0.6430091298398879
+;; TRACE t16123: | | | => 0.8655912641984398
+;; TRACE t16122: | | => 0.0026028791309826715
+;; TRACE t16121: | => 0.007808566855134185
+;; TRACE t16120: => 0.023423796096041047
+;; 0.023423796096041047
+;;
+;; b.
+;;   the order of growth in space: Θ(log3 n)
+;;   the order of growth in number of steps: Θ(log3 n)
