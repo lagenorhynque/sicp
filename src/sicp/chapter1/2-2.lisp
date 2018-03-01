@@ -44,10 +44,36 @@
 (count-change 100)
 
 ;; Exercise 1.11
-;; TODO
+;; recursive process
+(defun f (n)
+  (if (< n 3)
+      n
+      (+ (f (- n 1))
+         (* 2 (f (- n 2)))
+         (* 3 (f (- n 3))))))
+
+;; iterative process
+;; a <- (+ a (* 2 b) (* 3 c))
+;; b <- a
+;; c <- b
+(defun f* (n)
+  (labels ((f-iter (a b c cnt)
+             (if (zerop cnt)
+                 c
+                 (f-iter (+ a
+                            (* 2 b)
+                            (* 3 c))
+                         a
+                         b
+                         (1- cnt)))))
+    (f-iter 2 1 0 n)))
 
 ;; Exercise 1.12
-;; TODO
+(defun pascals-triangle (n k)
+  (if (or (zerop k) (= n k))
+      1
+      (+ (pascals-triangle (1- n) (1- k))
+         (pascals-triangle (1- n) k))))
 
 ;; Exercise 1.13
 ;; TODO
