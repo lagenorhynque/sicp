@@ -4,7 +4,7 @@
 
 ;;; 1.1.4  Compound Procedures
 
-(defn square [x] (* x x))
+(defn square [x] (*' x x))
 
 (square 21)
 

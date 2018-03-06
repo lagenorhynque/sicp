@@ -6,20 +6,20 @@
 
 (defn factorial [n]
   (if (== n 1)
-    1N
-    (* n (factorial (dec n)))))
+    1
+    (*' n (factorial (dec n)))))
 
 (factorial 6)
 
 (defn factorial-iter [product counter max-count]
   (if (> counter max-count)
     product
-    (recur (* counter product)
+    (recur (*' counter product)
            (inc counter)
            max-count)))
 
 (defn factorial' [n]
-  (factorial-iter 1N 1 n))
+  (factorial-iter 1 1 n))
 
 (factorial' 6)
 
