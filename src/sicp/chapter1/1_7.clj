@@ -35,8 +35,9 @@
 
 ;; Exercise 1.6
 (defn new-if [predicate then-clause else-clause]
-  (cond predicate then-clause
-        :else else-clause))
+  (cond
+    predicate then-clause
+    :else else-clause))
 
 (new-if (== 2 3) 0 5)
 
@@ -55,8 +56,9 @@
 ;;   recursion does not stop forever. You can control evaluation of arguments using macros as follows:
 
 (defmacro new-if' [predicate then-clause else-clause]
-  `(cond ~predicate ~then-clause
-         :else ~else-clause))
+  `(cond
+     ~predicate ~then-clause
+     :else ~else-clause))
 
 (defn sqrt-iter'' [guess x]
   (new-if' (good-enough? guess x)

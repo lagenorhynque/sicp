@@ -24,9 +24,10 @@
   (zero? (rem n 2)))
 
 (defn fast-expt [b n]
-  (cond (zero? n) 1
-        (even?' n) (square (fast-expt b (/ n 2)))
-        :else (*' b (fast-expt b (dec n)))))
+  (cond
+    (zero? n) 1
+    (even?' n) (square (fast-expt b (/ n 2)))
+    :else (*' b (fast-expt b (dec n)))))
 
 ;; Exercise 1.16
 ;; TODO

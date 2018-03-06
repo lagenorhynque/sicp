@@ -5,10 +5,11 @@
 ;;; 1.2.2  Tree Recursion
 
 (defn fib [n]
-  (cond (== n 0) 0
-        (== n 1) 1
-        :else (+ (fib (- n 1))
-                 (fib (- n 2)))))
+  (cond
+    (== n 0) 0
+    (== n 1) 1
+    :else (+ (fib (- n 1))
+             (fib (- n 2)))))
 
 (defn fib-iter [a b cnt]
   (if (zero? cnt)
@@ -28,13 +29,14 @@
     nil))
 
 (defn cc [amount kinds-of-coins]
-  (cond (zero? amount) 1
-        (or (< amount 0) (= kinds-of-coins 0)) 0
-        :else (+ (cc amount
-                     (dec kinds-of-coins))
-                 (cc (- amount
-                        (first-denomination kinds-of-coins))
-                     kinds-of-coins))))
+  (cond
+    (zero? amount) 1
+    (or (< amount 0) (= kinds-of-coins 0)) 0
+    :else (+ (cc amount
+                 (dec kinds-of-coins))
+             (cc (- amount
+                    (first-denomination kinds-of-coins))
+                 kinds-of-coins))))
 
 (defn count-change [amount]
   (cc amount 5))

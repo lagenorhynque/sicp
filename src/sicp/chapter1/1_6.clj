@@ -6,13 +6,15 @@
 ;;; 1.1.6  Conditional Expressions and Predicates
 
 (defn abs [x]
-  (cond (> x 0) x
-        (== x 0) 0
-        (< x 0) (- x)))
+  (cond
+    (> x 0) x
+    (== x 0) 0
+    (< x 0) (- x)))
 
 (defn abs' [x]
-  (cond (< x 0) (- x)
-        :else x))
+  (cond
+    (< x 0) (- x)
+    :else x))
 
 (defn abs'' [x]
   (if (< x 0)
@@ -61,17 +63,19 @@
   a)
 ;; => 4
 
-(cond (== a 4) 6
-      (== b 4) (+ 6 7 a)
-      :else 25)
+(cond
+  (== a 4) 6
+  (== b 4) (+ 6 7 a)
+  :else 25)
 ;; => 16
 
 (+ 2 (if (> b a) b a))
 ;; => 6
 
-(* (cond (> a b) a
-         (< a b) b
-         :else -1)
+(* (cond
+     (> a b) a
+     (< a b) b
+     :else -1)
    (+ a 1))
 ;; => 16
 
@@ -81,9 +85,10 @@
 
 ;; Exercise 1.3
 (defn sum-of-squares-of-two-larger [x y z]
-  (cond (and (>= x z) (>= y z)) (sum-of-squares x y)
-        (and (>= y x) (>= z x)) (sum-of-squares y z)
-        :else (sum-of-squares z x)))
+  (cond
+    (and (>= x z) (>= y z)) (sum-of-squares x y)
+    (and (>= y x) (>= z x)) (sum-of-squares y z)
+    :else (sum-of-squares z x)))
 
 ;; Exercise 1.4
 (defn a-plus-abs-b [a b]
