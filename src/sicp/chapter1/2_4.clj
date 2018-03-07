@@ -30,7 +30,13 @@
     :else (*' b (fast-expt b (dec n)))))
 
 ;; Exercise 1.16
-;; TODO
+(defn fast-expt' [b n]
+  (letfn [(expt-iter [b n a]
+            (cond
+              (zero? n) a
+              (even? n) (recur (square b) (/ n 2) a)
+              :else (recur b (dec n) (*' a b))))]
+    (expt-iter b n 1)))
 
 ;; Exercise 1.17
 ;; TODO
