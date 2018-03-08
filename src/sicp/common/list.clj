@@ -8,34 +8,34 @@
   (set-car! [this a'])
   (set-cdr! [this b']))
 
-(deftype Pair [a b]
+(deftype Pair [^:volatile-mutable a ^:volatile-mutable b]
   SchemeLikeList
   (car [_]
-    @a)
+    a)
   (cdr [_]
-    @b)
+    b)
   (set-car! [this a']
-    (reset! a a')
+    (set! a a')
     this)
   (set-cdr! [this b']
-    (reset! b b')
+    (set! b b')
     this)
 
   Object
   (toString [_]
-    (str "(" @a " . " @b ")"))
+    (str "(" a " . " b ")"))
   (equals [this obj]
     (or (identical? this obj)
         (and (instance? Pair obj)
-             (= @a @(.a obj))
-             (= @b @(.b obj)))))
+             (= a (car obj))
+             (= b (cdr obj)))))
   (hashCode [_]
     (reduce #(+ (* 31 %1) (hash %2))
             17
-            [@a @b])))
+            [a b])))
 
 (defn kons [a b]
-  (->Pair (atom a) (atom b)))
+  (->Pair a b))
 
 (defn scheme-like-list [& xs]
   (reduce #(kons %2 %1) nil (reverse xs)))
