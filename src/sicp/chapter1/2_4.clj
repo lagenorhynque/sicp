@@ -39,7 +39,20 @@
     (expt-iter b n 1)))
 
 ;; Exercise 1.17
-;; TODO
+(defn *'' [a b]
+  (if (zero? b)
+    0
+    (+' a (*'' a (dec b)))))
+
+(defn double' [x] (*' x 2))
+
+(defn halve [x] (/ x 2))
+
+(defn fast-* [a b]
+  (cond
+    (zero? b) 0
+    (even? b) (double' (fast-* a (halve b)))
+    :else (+' a (fast-* a (dec b)))))
 
 ;; Exercise 1.18
 ;; TODO
