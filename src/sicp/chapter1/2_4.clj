@@ -55,7 +55,13 @@
     :else (+' a (fast-* a (dec b)))))
 
 ;; Exercise 1.18
-;; TODO
+(defn fast-*' [a b]
+  (letfn [(*-iter [a b p]
+            (cond
+              (zero? b) p
+              (even? b) (recur (double' a) (halve b) p)
+              :else (recur a (dec b) (+' a p))))]
+    (*-iter a b 0)))
 
 ;; Exercise 1.19
 ;; TODO
