@@ -64,4 +64,41 @@
     (*-iter a b 0)))
 
 ;; Exercise 1.19
-;; TODO
+;; a' <- bq + aq + ap
+;; b' <- bp + aq
+;;
+;; a'' <- (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap)p
+;; b'' <- (bp + aq)p + (bq + aq + ap)q
+;;
+;;   (bp + aq)q + (bq + aq + ap)q + (bq + aq + ap)p
+;; = bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2
+;; = ap^2 + 2aq^2 + bq^2 + 2apq + 2bpq
+;; = b(q^2 + 2pq) + a(q^2 + 2pq) + a(p^2 + q^2)
+;;
+;;   (bp + aq)p + (bq + aq + ap)q
+;; = bp^2 + apq + bq^2 + aq^2 + apq
+;; = aq^2 + bp^2 + bq^2 + 2apq
+;; = b(p^2 + q^2) + a(q^2 + 2pq)
+;;
+;; a'' <- bq' + aq' + ap'
+;; b'' <- bp' + aq'
+;;
+;; p' = p^2 + q^2
+;; q' = q^2 + 2pq
+
+(defn fib-iter [a b p q cnt]
+  (cond
+    (zero? cnt) b
+    (even? cnt) (recur a
+                       b
+                       (+ (square p) (square q))
+                       (+ (square q) (* 2 p q))
+                       (/ cnt 2))
+    :else (recur (+ (* b q) (* a q) (* a p))
+                 (+ (* b p) (* a q))
+                 p
+                 q
+                 (dec cnt))))
+
+(defn fib [n]
+  (fib-iter 1 0 0 1 n))
