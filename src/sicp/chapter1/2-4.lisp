@@ -31,10 +31,26 @@
         (t (* b (fast-expt b (1- n))))))
 
 ;; Exercise 1.16
-;; TODO
+(defun fast-expt* (b n)
+  (labels ((expt-iter (b n a)
+             (cond ((zerop n) a)
+                   ((evenp n) (expt-iter (square b) (/ n 2) a))
+                   (t (expt-iter b (1- n) (* a b))))))
+    (expt-iter b n 1)))
 
 ;; Exercise 1.17
-;; TODO
+(defun my-* (a b)
+  (if (zerop b)
+      0
+      (+ a (my-* a (1- b)))))
+
+(defun double (x) (* x 2))
+
+(defun halve (x) (/ x 2))
+
+(defun fast-* (a b)
+  ;; TODO
+  )
 
 ;; Exercise 1.18
 ;; TODO
