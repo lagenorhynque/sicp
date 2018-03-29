@@ -49,11 +49,17 @@
 (defun halve (x) (/ x 2))
 
 (defun fast-* (a b)
-  ;; TODO
-  )
+  (cond ((zerop b) 0)
+        ((evenp b) (double (fast-* a (halve b))))
+        (t (+ a (fast-* a (1- b))))))
 
 ;; Exercise 1.18
-;; TODO
+(defun fast-** (a b)
+  (labels ((*-iter (a b p)
+             (cond ((zerop b) p)
+                   ((evenp b) (*-iter (double a) (halve b) p))
+                   (t (*-iter a (1- b) (+ a p))))))
+    (*-iter a b 0)))
 
 ;; Exercise 1.19
 ;; TODO
