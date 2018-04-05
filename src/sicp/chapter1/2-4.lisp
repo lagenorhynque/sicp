@@ -62,4 +62,18 @@
     (*-iter a b 0)))
 
 ;; Exercise 1.19
-;; TODO
+(defun fib (n)
+  (labels ((fib-iter (a b p q count)
+             (cond ((zerop count) b)
+                   ((evenp count)
+                    (fib-iter a
+                              b
+                              (+ (square p) (square q))
+                              (+ (square q) (* 2 p q))
+                              (/ count 2)))
+                   (t (fib-iter (+ (* b q) (* a q) (* a p))
+                                (+ (* b p) (* a q))
+                                p
+                                q
+                                (1- count))))))
+    (fib-iter 1 0 0 1 n)))
