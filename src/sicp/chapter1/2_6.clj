@@ -40,7 +40,12 @@
     :else false))
 
 ;; Exercise 1.21
-;; TODO
+(smallest-divisor 199)
+;; => 199
+(smallest-divisor 1999)
+;; => 1999
+(smallest-divisor 19999)
+;; => 7
 
 ;; Exercise 1.22
 ;; TODO
