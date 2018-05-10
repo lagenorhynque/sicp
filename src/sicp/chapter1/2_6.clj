@@ -268,7 +268,17 @@
 ;; TODO
 
 ;; Exercise 1.27
-;; TODO
+(defn prime-by-fermat-test? [n]
+  (letfn [(try-it [a]
+            (== (expmod a n n) a))
+          (full-fermat-test [a]
+            (cond
+              (>= a n) true
+              (try-it a) (recur (inc a))
+              :else false))]
+    (full-fermat-test 1)))
+
+(map prime-by-fermat-test? [561 1105 1729 2465 2821 6601])
 
 ;; Exercise 1.28
 ;; TODO
