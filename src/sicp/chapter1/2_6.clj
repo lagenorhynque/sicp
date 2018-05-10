@@ -176,7 +176,63 @@
 ;; => the three smallest primes larger than 1,000,000: 1000003, 1000033, 1000037
 
 ;; Exercise 1.23
-;; TODO
+(defn find-divisor' [n test-divisor]
+  (letfn [(next* [n]
+            (if (== n 2)
+              3
+              (+ n 2)))]
+    (cond
+      (> (square test-divisor) n) n
+      (divides? test-divisor n) test-divisor
+      :else (recur n (next* test-divisor)))))
+(defn smallest-divisor' [n]
+  (find-divisor' n 2))
+(defn prime?' [n]
+  (== n (smallest-divisor' n)))
+
+(defn start-prime-test' [n start-time]
+  (when (prime?' n)
+    (report-prime (- (System/nanoTime) start-time))))
+(defn timed-prime-test' [n]
+  (print n)
+  (start-prime-test' n (System/nanoTime))
+  (println))
+
+(doseq [n [1009, 1013, 1019
+           10007, 10009, 10037
+           100003, 100019, 100043
+           1000003, 1000033, 1000037]]
+  (timed-prime-test n))
+;; 1009 *** 12.527 μs
+;; 1013 *** 10.247 μs
+;; 1019 *** 6.971 μs
+;; 10007 *** 15.635 μs
+;; 10009 *** 15.112 μs
+;; 10037 *** 15.012 μs
+;; 100003 *** 43.697 μs
+;; 100019 *** 43.301 μs
+;; 100043 *** 43.912 μs
+;; 1000003 *** 132.267 μs
+;; 1000033 *** 132.418 μs
+;; 1000037 *** 132.779 μs
+
+(doseq [n [1009, 1013, 1019
+           10007, 10009, 10037
+           100003, 100019, 100043
+           1000003, 1000033, 1000037]]
+  (timed-prime-test' n))
+;; 1009 *** 17.093 μs
+;; 1013 *** 12.755 μs
+;; 1019 *** 8.466 μs
+;; 10007 *** 19.335 μs
+;; 10009 *** 19.044 μs
+;; 10037 *** 19.25 μs
+;; 100003 *** 58.909 μs
+;; 100019 *** 55.54 μs
+;; 100043 *** 61.068 μs
+;; 1000003 *** 164.267 μs
+;; 1000033 *** 167.636 μs
+;; 1000037 *** 162.213 μs
 
 ;; Exercise 1.24
 ;; TODO
