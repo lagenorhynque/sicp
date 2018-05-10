@@ -42,7 +42,31 @@
 ;; TODO
 
 ;; Exercise 1.22
-;; TODO
+(defun report-prime (elapsed-time)
+  (princ " *** ")
+  (princ elapsed-time))
+(defun start-prime-test (n start-time)
+  (when (primep n)
+    (report-prime (- (get-universal-time) start-time))))
+(defun timed-prime-test (n)
+  (princ n)
+  (start-prime-test n (get-universal-time))
+  (terpri))
+
+(defun search-for-primes (start end)
+  (labels ((search-iter (n)
+             (when (< n end)
+               (timed-prime-test n)
+               (search-iter (+ n 2)))))
+    (search-iter (if (oddp start) start (1+ start)))))
+
+#+(or)(search-for-primes 1000 1050)
+
+#+(or)(search-for-primes 10000 10050)
+
+#+(or)(search-for-primes 100000 100050)
+
+#+(or)(search-for-primes 1000000 1000050)
 
 ;; Exercise 1.23
 ;; TODO
