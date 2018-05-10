@@ -235,7 +235,31 @@
 ;; 1000037 *** 162.213 μs
 
 ;; Exercise 1.24
-;; TODO
+(defn start-prime-test'' [n start-time]
+  (when (fast-prime? n 100)
+    (report-prime (- (System/nanoTime) start-time))))
+(defn timed-prime-test'' [n]
+  (print n)
+  (start-prime-test'' n (System/nanoTime))
+  (println))
+
+(doseq [n [1009, 1013, 1019
+           10007, 10009, 10037
+           100003, 100019, 100043
+           1000003, 1000033, 1000037]]
+  (timed-prime-test'' n))
+;; 1009 *** 254.804 μs
+;; 1013 *** 257.06 μs
+;; 1019 *** 354.91 μs
+;; 10007 *** 323.612 μs
+;; 10009 *** 312.139 μs
+;; 10037 *** 332.651 μs
+;; 100003 *** 551.034 μs
+;; 100019 *** 519.051 μs
+;; 100043 *** 367.41 μs
+;; 1000003 *** 406.246 μs
+;; 1000033 *** 464.442 μs
+;; 1000037 *** 419.474 μs
 
 ;; Exercise 1.25
 ;; TODO
