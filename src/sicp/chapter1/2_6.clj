@@ -66,7 +66,7 @@
               (recur (+ n 2))))]
     (search-iter (if (odd? start) start (inc start)))))
 
-(search-for-primes 1000 1050)
+#_(search-for-primes 1000 1050)
 ;; 1001
 ;; 1003
 ;; 1005
@@ -93,7 +93,8 @@
 ;; 1047
 ;; 1049 *** 5.336 μs
 ;; => the three smallest primes larger than 1000: 1009, 1013, 1019
-(search-for-primes 10000 10050)
+
+#_(search-for-primes 10000 10050)
 ;; 10001
 ;; 10003
 ;; 10005
@@ -120,7 +121,8 @@
 ;; 10047
 ;; 10049
 ;; => the three smallest primes larger than 10,000: 10007, 10009, 10037
-(search-for-primes 100000 100050)
+
+#_(search-for-primes 100000 100050)
 ;; 100001
 ;; 100003 *** 47.944 μs
 ;; 100005
@@ -147,7 +149,8 @@
 ;; 100047
 ;; 100049 *** 41.541 μs
 ;; => the three smallest primes larger than 100,000: 100003, 100019, 100043
-(search-for-primes 1000000 1000050)
+
+#_(search-for-primes 1000000 1000050)
 ;; 1000001
 ;; 1000003 *** 134.45 μs
 ;; 1000005
@@ -198,11 +201,11 @@
   (start-prime-test' n (System/nanoTime))
   (println))
 
-(doseq [n [1009, 1013, 1019
-           10007, 10009, 10037
-           100003, 100019, 100043
-           1000003, 1000033, 1000037]]
-  (timed-prime-test n))
+#_(doseq [n [1009, 1013, 1019
+             10007, 10009, 10037
+             100003, 100019, 100043
+             1000003, 1000033, 1000037]]
+    (timed-prime-test n))
 ;; 1009 *** 12.527 μs
 ;; 1013 *** 10.247 μs
 ;; 1019 *** 6.971 μs
@@ -216,11 +219,11 @@
 ;; 1000033 *** 132.418 μs
 ;; 1000037 *** 132.779 μs
 
-(doseq [n [1009, 1013, 1019
-           10007, 10009, 10037
-           100003, 100019, 100043
-           1000003, 1000033, 1000037]]
-  (timed-prime-test' n))
+#_(doseq [n [1009, 1013, 1019
+             10007, 10009, 10037
+             100003, 100019, 100043
+             1000003, 1000033, 1000037]]
+    (timed-prime-test' n))
 ;; 1009 *** 17.093 μs
 ;; 1013 *** 12.755 μs
 ;; 1019 *** 8.466 μs
@@ -243,11 +246,11 @@
   (start-prime-test'' n (System/nanoTime))
   (println))
 
-(doseq [n [1009, 1013, 1019
-           10007, 10009, 10037
-           100003, 100019, 100043
-           1000003, 1000033, 1000037]]
-  (timed-prime-test'' n))
+#_(doseq [n [1009, 1013, 1019
+             10007, 10009, 10037
+             100003, 100019, 100043
+             1000003, 1000033, 1000037]]
+    (timed-prime-test'' n))
 ;; 1009 *** 254.804 μs
 ;; 1013 *** 257.06 μs
 ;; 1019 *** 354.91 μs
@@ -278,7 +281,34 @@
               :else false))]
     (full-fermat-test 1)))
 
+;; Carmichael numbers
 (map prime-by-fermat-test? [561 1105 1729 2465 2821 6601])
 
 ;; Exercise 1.28
-;; TODO
+(defn miller-rabin-expmod [base exp m]
+  (letfn [(square-rem-with-nontrivial-sqrt1-check [n]
+            (let [sqrem (rem (square n) m)]
+              (if (and (not (== n 1))
+                       (not (== n (- m 1)))
+                       (== sqrem 1))
+                0
+                sqrem)))]
+    (cond
+      (zero? exp) 1
+      (even? exp) (square-rem-with-nontrivial-sqrt1-check
+                   (miller-rabin-expmod base (/ exp 2) m))
+      :else (rem (*' base (miller-rabin-expmod base (dec exp) m))
+                 m))))
+
+(defn prime-by-miller-rabin-fermat-test? [n]
+  (letfn [(try-it [a]
+            (== (miller-rabin-expmod a n n) a))
+          (full-fermat-test [a]
+            (cond
+              (>= a n) true
+              (try-it a) (recur (inc a))
+              :else false))]
+    (full-fermat-test 1)))
+
+;; Carmichael numbers
+(map prime-by-miller-rabin-fermat-test? [561 1105 1729 2465 2821 6601])
