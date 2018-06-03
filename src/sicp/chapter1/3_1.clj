@@ -54,3 +54,18 @@
 
 (integral cube 0 1 0.01)
 (integral cube 0 1 0.001)
+
+;; Exercise 1.29
+;; TODO
+
+;; Exercise 1.30
+;; TODO
+
+;; Exercise 1.31
+;; TODO
+
+;; Exercise 1.32
+;; TODO
+
+;; Exercise 1.33
+;; TODO
