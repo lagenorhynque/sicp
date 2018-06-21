@@ -82,6 +82,23 @@
 
 ;;; 2.1.2  Abstraction Barriers
 
+(define (make-rat n d)
+  (cons n d))
+
+(define (numer x)
+  (let ((g (gcd (car x) (cdr x))))
+    (/ (car x) g)))
+
+(define (denom x)
+  (let ((g (gcd (car x) (cdr x))))
+    (/ (cdr x) g)))
+
+;; Exercise 2.2
+;; TODO
+
+;; Exercise 2.3
+;; TODO
+
 ;;; 2.1.3  What Is Meant by Data?
 
 ;;; 2.1.4  Extended Exercise: Interval Arithmetic
