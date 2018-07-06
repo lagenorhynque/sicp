@@ -1,5 +1,6 @@
 (ns sicp.chapter2.1-2
-  (:require [sicp.chapter1.1-7 :refer [average]]
+  (:require [sicp.chapter1.1-6 :refer [abs]]
+            [sicp.chapter1.1-7 :refer [average]]
             [sicp.chapter1.2-5 :refer [gcd]]
             [sicp.common.list :refer :all]))
 
@@ -47,4 +48,26 @@
   (printf "(%s,%s)%n" (x-point p) (y-point p)))
 
 ;; Exercise 2.3
-;; TODO
+(defn make-rectangle [p1 p2]
+  (kons p1 p2))
+
+(defn width [rect]
+  (let [p1 (car rect)
+        p1-x (x-point p1)
+        p2 (cdr rect)
+        p2-x (x-point p2)]
+    (abs (- p2-x p1-x))))
+
+(defn height [rect]
+  (let [p1 (car rect)
+        p1-y (y-point p1)
+        p2 (cdr rect)
+        p2-y (y-point p2)]
+    (abs (- p2-y p1-y))))
+
+(defn perimeter [rect]
+  (+ (* 2 (width rect))
+     (* 2 (height rect))))
+
+(defn area [rect]
+  (* (width rect) (height rect)))
