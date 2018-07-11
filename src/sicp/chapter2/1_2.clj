@@ -71,3 +71,38 @@
 
 (defn area [rect]
   (* (width rect) (height rect)))
+
+;; Exercise 2.3'
+(defn point [x y]
+  #:point{:x x
+          :y y})
+
+(defn vect [p1 p2]
+  #:vect{:x (- (:point/x p2) (:point/x p1))
+         :y (- (:point/y p2) (:point/y p1))})
+
+(defn dist [p1 p2]
+  (let [dx (- (:point/x p2) (:point/x p1))
+        dy (- (:point/y p2) (:point/y p1))]
+    (Math/sqrt (+ (Math/pow dx 2)
+                  (Math/pow dy 2)))))
+
+(defn rectangle [pa po pb]
+  #:rectangle{:len-a (dist po pa)
+              :len-b (dist po pb)
+              :vect-a (vect po pa)
+              :vect-b (vect po pb)})
+
+(defn perimeter* [{:rectangle/keys [len-a len-b]}]
+  (+ (* 2 len-a) (* 2 len-b)))
+
+(defn area* [{:rectangle/keys [vect-a vect-b]}]
+  (Math/abs (- (* (:vect/x vect-a) (:vect/y vect-b))
+               (* (:vect/y vect-a) (:vect/x vect-b)))))
+
+#_(let [p1 (point 0 0)
+        p2 (point -1 1)
+        p3 (point 0 2)
+        rect (rectangle p1 p2 p3)]
+    {:perimeter (perimeter* rect)
+     :area (area* rect)})
