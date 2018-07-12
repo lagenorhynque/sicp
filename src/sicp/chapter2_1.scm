@@ -102,3 +102,42 @@
 ;;; 2.1.3  What Is Meant by Data?
 
 ;;; 2.1.4  Extended Exercise: Interval Arithmetic
+
+;; Exercise 2.5
+(define (cons* x y)
+  (* (expt 2 x) (expt 3 y)))
+
+(define (car* z)
+  (define (f n acc)
+    (if (zero? (modulo n 2))
+        (f (quotient n 2) (add1 acc))
+        acc))
+  (f z 0))
+
+(define (cdr* z)
+  (define (f n acc)
+    (if (zero? (modulo n 3))
+        (f (quotient n 3) (add1 acc))
+        acc))
+  (f z 0))
+
+;; Exercise 2.6
+(define zero (lambda (f) (lambda (x) x)))
+(define (add-1 n)
+  (lambda (f) (lambda (x) (f ((n f) x)))))
+
+(define one
+  (add-1 zero))
+(define one
+  (let ((n (lambda (f) (lambda (x) x))))
+    (lambda (f) (lambda (x) (f ((n f) x))))))
+(define one
+  (lambda (f) (lambda (x) (f x))))
+
+(define two
+  (add-1 one))
+(define two
+  (let ((n (lambda (f) (lambda (x) (f x)))))
+    (lambda (f) (lambda (x) (f ((n f) x))))))
+(define two
+  (lambda (f) (lambda (x) (f (f x)))))
