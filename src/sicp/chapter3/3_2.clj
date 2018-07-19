@@ -100,7 +100,7 @@
   (nil? (front-ptr deque)))
 
 (defn deque-element [item]
-  (scheme-like-list item nil nil))
+  (lst item nil nil))
 (defn deque-item [deque]
   (car deque))
 (defn deque-next [deque]
@@ -198,7 +198,7 @@
   :ok)
 
 (defn make-table []
-  (scheme-like-list '*table*))
+  (lst '*table*))
 
 (defn lookup' [key-1 key-2 table]
   (if-let [subtable (assok key-1 (cdr table))]
@@ -215,13 +215,13 @@
                 (kons (kons key-2 value)
                       (cdr subtable))))
     (set-cdr! table
-              (kons (scheme-like-list key-1
-                                      (kons key-2 value))
+              (kons (lst key-1
+                         (kons key-2 value))
                     (cdr table))))
   :ok)
 
 (defn make-table' []
-  (let [local-table (scheme-like-list '*table*)
+  (let [local-table (lst '*table*)
         lookup (fn [key-1 key-2]
                  (if-let [subtable (assok key-1 (cdr local-table))]
                    (if-let [record (assok key-2 (cdr subtable))]
@@ -236,8 +236,8 @@
                                 (kons (kons key-2 value)
                                       (cdr subtable))))
                     (set-cdr! local-table
-                              (kons (scheme-like-list key-1
-                                                      (kons key-2 value))
+                              (kons (lst key-1
+                                         (kons key-2 value))
                                     (cdr local-table))))
                   :ok)
         dispatch (fn [m]
@@ -250,7 +250,7 @@
 
 ;; Exercise 3.24
 (defn make-table'' [& {:keys [same-key?] :or {same-key? =}}]
-  (let [local-table (scheme-like-list '*table*)
+  (let [local-table (lst '*table*)
         assok (fn assok [key records]
                 (cond
                   (nil? records) false
@@ -270,8 +270,8 @@
                                 (kons (kons key-2 value)
                                       (cdr subtable))))
                     (set-cdr! local-table
-                              (kons (scheme-like-list key-1
-                                                      (kons key-2 value))
+                              (kons (lst key-1
+                                         (kons key-2 value))
                                     (cdr local-table))))
                   :ok)
         dispatch (fn [m]
@@ -299,14 +299,14 @@
       (set-car! table value)
       (if-let [subtable (assok (first keys) (cdr table))]
         (recur (rest keys) (cdr subtable))
-        (let [subtable (scheme-like-list (first keys) false)]
+        (let [subtable (lst (first keys) false)]
           (set-cdr! table (kons subtable (cdr table)))
           (recur (rest keys) (cdr subtable))))))
   :ok)
 
 ;; Exercise 3.26
 (defn new-node [key]
-  (scheme-like-list key nil nil false))
+  (lst key nil nil false))
 (defn node-key [node]
   (car node))
 (defn node-left [node]

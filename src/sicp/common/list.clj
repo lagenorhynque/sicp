@@ -37,7 +37,7 @@
 (defn kons [a b]
   (->Pair a b))
 
-(defn scheme-like-list [& xs]
+(defn lst [& xs]
   (reduce #(kons %2 %1) nil (reverse xs)))
 
 (defn pair? [x]

@@ -13,26 +13,26 @@
     (t/is (= 3 (sut/car x)))
     (t/is (= 4 (sut/cdr x)))))
 
-(t/deftest scheme-like-list-test
-  (let [xs (sut/scheme-like-list)]
+(t/deftest lst-test
+  (let [xs (sut/lst)]
     (t/is (nil? xs)))
-  (let [xs (sut/scheme-like-list 1)]
+  (let [xs (sut/lst 1)]
     (t/is (= 1 (sut/car xs)))
     (t/is (nil? (sut/cdr xs))))
-  (let [xs (sut/scheme-like-list 1 2 3)]
+  (let [xs (sut/lst 1 2 3)]
     (t/is (= 1 (sut/car xs)))
-    (t/is (= (sut/scheme-like-list 2 3) (sut/cdr xs)))
+    (t/is (= (sut/lst 2 3) (sut/cdr xs)))
     (t/is (= 2 (sut/car (sut/cdr xs))))
-    (t/is (= (sut/scheme-like-list 3) (sut/cdr (sut/cdr xs))))
+    (t/is (= (sut/lst 3) (sut/cdr (sut/cdr xs))))
     (t/is (= 3 (sut/car (sut/cdr (sut/cdr xs)))))
     (t/is (nil? (sut/cdr (sut/cdr (sut/cdr xs)))))))
 
 (t/deftest pair?-test
   (t/is (true? (sut/pair? (sut/kons 1 2))))
   (t/is (false? (sut/pair? nil)))
-  (t/is (false? (sut/pair? (sut/scheme-like-list))))
-  (t/is (true? (sut/pair? (sut/scheme-like-list 1))))
-  (t/is (true? (sut/pair? (sut/scheme-like-list 1 2 3))))
+  (t/is (false? (sut/pair? (sut/lst))))
+  (t/is (true? (sut/pair? (sut/lst 1))))
+  (t/is (true? (sut/pair? (sut/lst 1 2 3))))
   (t/is (false? (sut/pair? [1 2 3]))))
 
 (t/deftest pair-toString-test
@@ -40,7 +40,7 @@
   (t/is (= "(1 . )" (str (sut/kons 1 nil))))
   (t/is (= "( . 2)" (str (sut/kons nil 2))))
   (t/is (= "( . )" (str (sut/kons nil nil))))
-  (t/is (= "(1 . (2 . (3 . )))" (str (sut/scheme-like-list 1 2 3)))))
+  (t/is (= "(1 . (2 . (3 . )))" (str (sut/lst 1 2 3)))))
 
 (t/deftest pair-equals-test
   (let [x (sut/kons 1 2)
@@ -49,9 +49,9 @@
     (t/is (true? (= x x)))
     (t/is (true? (= x y)))
     (t/is (false? (= x z))))
-  (let [xs (sut/scheme-like-list 1 2 3)
-        ys (sut/scheme-like-list 1 2 3)
-        zs (sut/scheme-like-list 1 2 4)]
+  (let [xs (sut/lst 1 2 3)
+        ys (sut/lst 1 2 3)
+        zs (sut/lst 1 2 4)]
     (t/is (true? (= xs xs)))
     (t/is (true? (= xs ys)))
     (t/is (false? (= xs zs)))))
@@ -63,9 +63,9 @@
     (t/is (= (hash x) (hash x)))
     (t/is (= (hash x) (hash y)))
     (t/is (not= (hash x) (hash z))))
-  (let [xs (sut/scheme-like-list 1 2 3)
-        ys (sut/scheme-like-list 1 2 3)
-        zs (sut/scheme-like-list 1 2 4)]
+  (let [xs (sut/lst 1 2 3)
+        ys (sut/lst 1 2 3)
+        zs (sut/lst 1 2 4)]
     (t/is (= (hash xs) (hash xs)))
     (t/is (= (hash xs) (hash ys)))
     (t/is (not= (hash xs) (hash zs)))))
