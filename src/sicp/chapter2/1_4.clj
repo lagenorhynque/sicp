@@ -1,4 +1,5 @@
-(ns sicp.chapter2.1-4)
+(ns sicp.chapter2.1-4
+  (:require [sicp.common.list :refer :all]))
 
 ;;;; 2.1  Introduction to Data Abstraction
 
@@ -24,10 +25,19 @@
                                (/ 1.0 (lower-bound y)))))
 
 ;; Exercise 2.7
-;; TODO
+(defn make-interval [a b]
+  (kons a b))
+
+(defn lower-bound [interval]
+  (car interval))
+
+(defn upper-bound [interval]
+  (cdr interval))
 
 ;; Exercise 2.8
-;; TODO
+(defn sub-interval [x y]
+  (make-interval (- (lower-bound x) (upper-bound y))
+                 (- (upper-bound x) (lower-bound y))))
 
 ;; Exercise 2.9
 ;; TODO

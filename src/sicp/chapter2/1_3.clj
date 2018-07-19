@@ -70,4 +70,5 @@
 (fn [f] (fn [x] (f (f x))))
 (def two (fn [f] (fn [x] (f (f x)))))
 
-;; TODO: define `+`
+(defn plus [a b]
+  (fn [f] (fn [x] ((a f) ((b f) x)))))
