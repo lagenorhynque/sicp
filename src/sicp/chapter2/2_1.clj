@@ -1,4 +1,5 @@
-(ns sicp.chapter2.2-1)
+(ns sicp.chapter2.2-1
+  (:require [sicp.common.list :refer :all]))
 
 ;;;; 2.2  Hierarchical Data and the Closure Property
 
@@ -12,6 +13,11 @@
 
 (last-pair (list 23 72 149 34))
 
+(defn last-pair' [pair]
+  (if (nil? (cdr pair))
+    pair
+    (recur (cdr pair))))
+
 ;; Exercise 2.18
 (defn reverse' [coll]
   (letfn [(rev [coll acc]
@@ -22,6 +28,22 @@
     (rev coll [])))
 
 (reverse' (list 1 4 9 16 25))
+
+(defn reverse'' [l]
+  (letfn [(rev [l acc]
+            (if (nil? l)
+              acc
+              (recur (cdr l)
+                     (kons (car l) acc))))]
+    (rev l nil)))
+
+(defn reverse''' [l]
+  (loop [l l
+         acc nil]
+    (if (nil? l)
+      acc
+      (recur (cdr l)
+             (kons (car l) acc)))))
 
 ;; Exercise 2.19
 (def us-coins (list 50 25 10 5 1))
