@@ -51,7 +51,18 @@
 ;; TODO
 
 ;; Exercise 2.20
-;; TODO
+(defn same-parity [x & xs]
+  (letfn [(same? [n]
+            (= (mod x 2) (mod n 2)))]
+    (cons x (filter same? xs))))
+
+(defn my-filter [f coll]
+  (lazy-seq
+   (when-let [s (seq coll)]
+     (if (f (first s))
+       (cons (first s)
+             (my-filter f (rest s)))
+       (my-filter f (rest s))))))
 
 ;; Exercise 2.21
 ;; TODO
@@ -60,4 +71,8 @@
 ;; TODO
 
 ;; Exercise 2.23
-;; TODO
+(defn for-each [f coll]
+  (if (empty? coll)
+    nil
+    (do (f (first coll))
+        (recur f (rest coll)))))
