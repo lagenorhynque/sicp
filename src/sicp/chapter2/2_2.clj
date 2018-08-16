@@ -45,11 +45,13 @@
 
 ;; Exercise 2.28
 (defn fringe [tree]
-  (cond
-    (not (seq? tree)) [tree]
-    (empty? tree) []
-    :else (concat (fringe (first tree))
-                  (fringe (fnext tree)))))
+  (letfn [(fri [coll acc]
+            (cond
+              (not (seq? coll)) (cons coll acc)
+              (empty? coll) acc
+              :else (recur (rest coll)
+                           (fri (first coll) acc))))]
+    (reverse (fri tree []))))
 
 (def x'' (list (list 1 2) (list 3 4)))
 (fringe x'')
