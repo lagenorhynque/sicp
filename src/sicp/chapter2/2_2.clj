@@ -1,5 +1,6 @@
 (ns sicp.chapter2.2-2
-  (:require [sicp.chapter2.2-1 :refer [reverse']]))
+  (:require [sicp.chapter1.1-4 :refer [square]]
+            [sicp.chapter2.2-1 :refer [reverse']]))
 
 ;;;; 2.2  Hierarchical Data and the Closure Property
 
@@ -61,10 +62,24 @@
 ;; TODO
 
 ;; Exercise 2.30
-;; TODO
+(defn square-tree [tree]
+  (map (fn [t]
+         (if (not (seq? t))
+           (square t)
+           (square-tree t)))
+       tree))
 
 ;; Exercise 2.31
-;; TODO
+(defn tree-map [f tree]
+  (map (fn [t]
+         (if (not (seq? t))
+           (f t)
+           (tree-map f t)))
+       tree))
 
 ;; Exercise 2.32
-;; TODO
+(defn subsets [s]
+  (if (empty? s)
+    (list ())
+    (let [rest' (subsets (rest s))]
+      (concat rest' (map (fn [x] (cons (first s) x)) rest')))))
