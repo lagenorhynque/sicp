@@ -4,14 +4,36 @@
 
 ;;; 2.2.3  Sequences as Conventional Interfaces
 
+(defn accumulate [op initial sequence]
+  (if (empty? sequence)
+    initial
+    (op (first sequence)
+        (accumulate op initial (rest sequence)))))
+
 ;; Exercise 2.33
-;; TODO
+(defn map' [p sequence]
+  (accumulate (fn [x y] (cons (p x) y)) nil sequence))
+
+(defn append [seq1 seq2]
+  (accumulate cons seq2 seq1))
+
+(defn length [sequence]
+  (accumulate (fn [_ acc] (inc acc))  0 sequence))
 
 ;; Exercise 2.34
-;; TODO
+(defn horner-eval [x coefficient-sequence]
+  (accumulate (fn [this-coeff higher-terms]
+                (+ this-coeff (* x higher-terms)))
+              0
+              coefficient-sequence))
 
 ;; Exercise 2.35
-;; TODO
+(defn count-leaves [t]
+  (accumulate + 0 (map (fn [x]
+                         (if (not (seq? x))
+                           1
+                           (count-leaves x)))
+                       t)))
 
 ;; Exercise 2.36
 ;; TODO
