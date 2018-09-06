@@ -36,16 +36,43 @@
                        t)))
 
 ;; Exercise 2.36
-;; TODO
+(defn accumulate-n [op init seqs]
+  (if (empty? (first seqs))
+    nil
+    (cons (accumulate op init (map first seqs))
+          (accumulate-n op init (map rest seqs)))))
 
 ;; Exercise 2.37
-;; TODO
+(defn dot-product [v w]
+  (accumulate + 0 (map * v w)))
+
+(defn matrix-*-vector [m v]
+  (map #(dot-product % v) m))
+
+(defn transpose [mat]
+  (accumulate-n cons nil mat))
+
+(defn matrix-*-matrix [m n]
+  (let [cols (transpose n)]
+    (map #(matrix-*-vector cols %) m)))
 
 ;; Exercise 2.38
 ;; TODO
 
 ;; Exercise 2.39
-;; TODO
+(defn fold-left [op initial sequence]
+  (letfn [(iter [result rest']
+            (if (empty? rest')
+              result
+              (recur (op result (first rest'))
+                     (rest rest'))))]
+    (iter initial sequence)))
+
+(defn reverse' [sequence]
+  (fold-left (fn [x y] (cons y x)) nil sequence))
+
+(defn reverse'' [sequence]
+  (accumulate (fn [x y] (concat y (list x))) nil sequence))
 
 ;; Exercise 2.40
 ;; TODO
