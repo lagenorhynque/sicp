@@ -75,10 +75,21 @@
   (accumulate (fn [x y] (concat y (list x))) nil sequence))
 
 ;; Exercise 2.40
-;; TODO
+(defn unique-pairs [n]
+  (mapcat (fn [i]
+            (map (fn [j] [i j])
+                 (range 1 i)))
+          (range 1 (inc n))))
 
 ;; Exercise 2.41
-;; TODO
+(defn triples [n s]
+  (->> (unique-pairs n)
+       (mapcat (fn [[i j]]
+                 (map (fn [k]
+                        [i j k])
+                      (range j))))
+       (filter (fn [ijk]
+                 (= (apply + ijk) s)))))
 
 ;; Exercise 2.42
 (defn queens [board-size]
