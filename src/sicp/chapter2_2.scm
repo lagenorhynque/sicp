@@ -315,13 +315,13 @@
 
 (#%require sicp-pict)
 
-;; Exercise 2.44
 (define (right-split painter n)
   (if (= n 0)
       painter
       (let ((smaller (right-split painter (- n 1))))
         (beside painter (below smaller smaller)))))
 
+;; Exercise 2.44
 (define (up-split painter n)
   (if (= n 0)
       painter
@@ -338,6 +338,11 @@
               (corner (corner-split painter (- n 1))))
           (beside (below painter top-left)
                   (below bottom-right corner))))))
+
+(define (square-limit painter n)
+  (let ((quarter (corner-split painter n)))
+    (let ((half (beside (flip-horiz quarter) quarter)))
+      (below (flip-vert half) half))))
 
 ;; Exercise 2.45
 (define (split f g)
@@ -405,6 +410,25 @@
                            (edge2-frame frame))))))
 
 ;; Exercise 2.48
+(define (make-segment* start end)
+  (cons start end))
 
+(define (start-segment* s)
+  (car s))
+
+(define (end-segment* s)
+  (cdr s))
 
 ;; Exercise 2.49
+(define frames
+  (lambda (frame)
+    (let* ((po (frame-origin frame))
+           (pa (vector-add po (frame-edge1 frame)))
+           (pb (vector-add po (frame-edge2 frame)))
+           (pc (vector-add (vector-add po (frame-edge1 frame))
+                           (frame-edge2 frame))))
+      ((segments->painter (list (make-segment po pa)
+                                (make-segment pa pc)
+                                (make-segment po pb)
+                                (make-segment pb pc)))
+       frame))))

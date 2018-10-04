@@ -37,6 +37,5 @@
 
 ;; Exercise 2.55
 (first ''abracadabra)
-;=> (first (quote (quote abracadabra)))
-;=> (first '(quote abracadabra))
-;=> quote
+;;=> (first (quote (quote abracadabra)))
+;;=> quote
