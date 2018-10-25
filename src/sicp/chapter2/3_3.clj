@@ -84,3 +84,24 @@
         (< x2 x1)
         (cons x2
               (union-set' set1 (rest set2)))))))
+
+(defn entry [tree] (first tree))
+
+(defn left-branch [tree] (fnext tree))
+
+(defn right-branch [tree] (first (nnext tree)))
+
+(defn make-tree [entry left right]
+  (list entry left right))
+
+;; Exercise 2.66
+(def key' identity)
+
+(defn lookup' [given-key set-of-records]
+  (cond
+    (empty? set-of-records) false
+    (= given-key (-> set-of-records entry key')) (entry set-of-records)
+    (< given-key (-> set-of-records entry key')) (recur given-key
+                                                        (left-branch set-of-records))
+    :else (recur given-key
+                 (right-branch set-of-records))))
