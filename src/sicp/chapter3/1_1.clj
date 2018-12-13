@@ -48,6 +48,11 @@
     (fn [n]
       (swap! sum + n))))
 
+(defn make-accumulator' [init]
+  (let [sum (volatile! init)]
+    (fn [n]
+      (vswap! sum + n))))
+
 ;; Exercise 3.2
 (defn make-monitored [f]
   (let [cnt (atom 0)]
