@@ -7,4 +7,7 @@
                  [org.clojure/math.combinatorics "0.1.4"]
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [dorothy "0.0.7"]]
-  :profiles {:dev {:plugins [[lein-eftest "0.5.4"]]}})
+  :profiles {:dev {:source-paths ["dev/src"]
+                   :dependencies [[orchestra "2019.02.06-1"]
+                                  [org.clojure/tools.namespace "0.2.11"]]
+                   :plugins [[lein-eftest "0.5.4"]]}})

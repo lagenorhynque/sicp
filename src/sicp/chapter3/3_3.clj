@@ -1,7 +1,8 @@
 (ns sicp.chapter3.3-3
   (:require [dorothy.core :as d]
             [sicp.common.graph :refer [create-node]]
-            [sicp.common.list :refer :all]))
+            [sicp.common.list :refer :all]
+            [sicp.common.string :refer [strip-margin]]))
 
 ;;;; 3.3  Modeling with Mutable Data
 
@@ -221,46 +222,46 @@
 (def memo-fib-3
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "memoise
-                                |memo-fib")]
+                        (strip-margin "memoise
+                                      |memo-fib"))]
        (d/node-attrs {:shape :note})
        [:t (create-node "table"
-                        #sicp/s "1 -> 1
-                                |0 -> 0
-                                |2 -> 1
-                                |3 -> 2")]
+                        (strip-margin "1 -> 1
+                                      |0 -> 0
+                                      |2 -> 1
+                                      |3 -> 2"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 3
-                                 |
-                                 |(+ (mem-fib 2) (mem-fib 1))
-                                 |-> insert table")]
+                         (strip-margin "x: 3
+                                       |
+                                       |(+ (mem-fib 2) (mem-fib 1))
+                                       |-> insert table"))]
        [:e2 (create-node "E2"
-                         #sicp/s "x: 2
-                                 |
-                                 |(+ (mem-fib 1) (mem-fib 0))
-                                 |-> insert table")]
+                         (strip-margin "x: 2
+                                       |
+                                       |(+ (mem-fib 1) (mem-fib 0))
+                                       |-> insert table"))]
        [:e3 (create-node "E3"
-                         #sicp/s "x: 1
-                                 |
-                                 |1
-                                 |-> insert table")]
+                         (strip-margin "x: 1
+                                       |
+                                       |1
+                                       |-> insert table"))]
        [:e4 (create-node "E4"
-                         #sicp/s "x: 0
-                                 |
-                                 |0
-                                 |-> insert table")]
+                         (strip-margin "x: 0
+                                       |
+                                       |0
+                                       |-> insert table"))]
        [:e5 (create-node "E5"
-                         #sicp/s "x: 1
-                                 |
-                                 |<- lookup table")]
+                         (strip-margin "x: 1
+                                       |
+                                       |<- lookup table"))]
 
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(let ((previously-computed-result (lookup x table)))
-                         |  (or previously-computed-result
-                         |      (let ((result (f x)))
-                         |        (insert! x result table)
-                         |        result)))")]
+                 (strip-margin "(let ((previously-computed-result (lookup x table)))
+                               |  (or previously-computed-result
+                               |      (let ((result (f x)))
+                               |        (insert! x result table)
+                               |        result)))"))]
          :c1 :c2 :c3 :c4 :c5])
 
        [:t :g]

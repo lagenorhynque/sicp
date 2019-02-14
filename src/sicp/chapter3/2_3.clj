@@ -1,6 +1,7 @@
 (ns sicp.chapter3.2-3
   (:require [dorothy.core :as d]
-            [sicp.common.graph :refer [create-node]]))
+            [sicp.common.graph :refer [create-node]]
+            [sicp.common.string :refer [strip-margin]]))
 
 ;;;; 3.2  The Environment Model of Evaluation
 
@@ -11,8 +12,8 @@
 (def make-withdraw-define-w1
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-withdraw
-                                |W1")]
+                        (strip-margin "make-withdraw
+                                      |W1"))]
        [:e1 (create-node "E1"
                          "initial-amount: 100")]
        [:e2 (create-node "E2"
@@ -27,8 +28,8 @@
 (def make-withdraw-w1
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-withdraw
-                                |acc")]
+                        (strip-margin "make-withdraw
+                                      |acc"))]
        [:e1 (create-node "E1"
                          "initial-amount: 100")]
        [:e2 (create-node "E2"
@@ -39,10 +40,10 @@
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(if (>= balance amount)
-                         |    (begin (set! balance (- balance amount))
-                         |           balance)
-                         |    \"Insufficient funds\")")]
+                 (strip-margin "(if (>= balance amount)
+                               |    (begin (set! balance (- balance amount))
+                               |           balance)
+                               |    \"Insufficient funds\")"))]
          :c3])
 
        [:e1 :g]
@@ -58,8 +59,8 @@
 (def make-withdraw-define-w2
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-withdraw
-                                |W1")]
+                        (strip-margin "make-withdraw
+                                      |W1"))]
        [:e1 (create-node "E1"
                          "initial-amount: 100")]
        [:e2 (create-node "E2"

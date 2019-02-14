@@ -1,6 +1,7 @@
 (ns sicp.chapter3.2-4
   (:require [dorothy.core :as d]
-            [sicp.common.graph :refer [create-node]]))
+            [sicp.common.graph :refer [create-node]]
+            [sicp.common.string :refer [strip-margin]]))
 
 ;;;; 3.2  The Environment Model of Evaluation
 
@@ -11,13 +12,13 @@
 (def make-account-define-acc
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-account
-                                |acc")]
+                        (strip-margin "make-account
+                                      |acc"))]
        [:e1 (create-node "E1"
-                         #sicp/s "balance: 50
-                                 |withdraw
-                                 |deposit
-                                 |dispatch")]
+                         (strip-margin "balance: 50
+                                       |withdraw
+                                       |deposit
+                                       |dispatch"))]
 
        [:e1 :g]]
       d/digraph
@@ -27,13 +28,13 @@
 (def make-account-acc-deposit
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-account
-                                |acc")]
+                        (strip-margin "make-account
+                                      |acc"))]
        [:e1 (create-node "E1"
-                         #sicp/s "balance: 50
-                                 |withdraw
-                                 |deposit
-                                 |dispatch")]
+                         (strip-margin "balance: 50
+                                       |withdraw
+                                       |deposit
+                                       |dispatch"))]
        [:e2 (create-node "E2"
                          "m: 'deposit")]
 
@@ -43,15 +44,15 @@
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(cond ((eq? m 'withdraw) withdraw)
-                         |      ((eq? m 'deposit) deposit)
-                         |      (else (error \"Unknown request -- MAKE-ACCOUNT\"
-                         |                   m)))")]
+                 (strip-margin "(cond ((eq? m 'withdraw) withdraw)
+                               |      ((eq? m 'deposit) deposit)
+                               |      (else (error \"Unknown request -- MAKE-ACCOUNT\"
+                               |                   m)))"))]
          :c2])
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(set! balance (+ balance amount))
-                         |balance")]
+                 (strip-margin "(set! balance (+ balance amount))
+                               |balance"))]
          :c3])
 
        [:e1 :g]
@@ -68,13 +69,13 @@
 (def make-account-acc-withdraw
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-account
-                                |acc")]
+                        (strip-margin "make-account
+                                      |acc"))]
        [:e1 (create-node "E1"
-                         #sicp/s "balance: 90
-                                 |withdraw
-                                 |deposit
-                                 |dispatch")]
+                         (strip-margin "balance: 90
+                                       |withdraw
+                                       |deposit
+                                       |dispatch"))]
        [:e4 (create-node "E4"
                          "m: 'withdraw")]
        [:e5 (create-node "E5"
@@ -83,17 +84,17 @@
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(cond ((eq? m 'withdraw) withdraw)
-                         |      ((eq? m 'deposit) deposit)
-                         |      (else (error \"Unknown request -- MAKE-ACCOUNT\"
-                         |                   m)))")]
+                 (strip-margin "(cond ((eq? m 'withdraw) withdraw)
+                               |      ((eq? m 'deposit) deposit)
+                               |      (else (error \"Unknown request -- MAKE-ACCOUNT\"
+                               |                   m)))"))]
          :c4])
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(if (>= balance amount)
-                         |    (begin (set! balance (- balance amount))
-                         |           balance)
-                         |    \"Insufficient funds\")")]
+                 (strip-margin "(if (>= balance amount)
+                               |    (begin (set! balance (- balance amount))
+                               |           balance)
+                               |    \"Insufficient funds\")"))]
          :c5])
 
        [:e1 :g]
@@ -110,19 +111,19 @@
 (def make-account-define-acc2
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "make-account
-                                |acc
-                                |acc2")]
+                        (strip-margin "make-account
+                                      |acc
+                                      |acc2"))]
        [:e1 (create-node "E1"
-                         #sicp/s "balance: 30
-                                 |withdraw
-                                 |deposit
-                                 |dispatch")]
+                         (strip-margin "balance: 30
+                                       |withdraw
+                                       |deposit
+                                       |dispatch"))]
        [:e6 (create-node "E6"
-                         #sicp/s "balance: 100
-                                 |withdraw
-                                 |deposit
-                                 |dispatch")]
+                         (strip-margin "balance: 100
+                                       |withdraw
+                                       |deposit
+                                       |dispatch"))]
 
        [:e1 :g]
        [:e6 :g]]

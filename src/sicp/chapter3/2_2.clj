@@ -1,6 +1,7 @@
 (ns sicp.chapter3.2-2
   (:require [dorothy.core :as d]
-            [sicp.common.graph :refer [create-node]]))
+            [sicp.common.graph :refer [create-node]]
+            [sicp.common.string :refer [strip-margin]]))
 
 ;;;; 3.2  The Environment Model of Evaluation
 
@@ -29,9 +30,9 @@
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(if (= n 1)
-                         |    1
-                         |    (* n (factorial (- n 1))))")]
+                 (strip-margin "(if (= n 1)
+                               |    1
+                               |    (* n (factorial (- n 1))))"))]
          :c1 :c2 :c3 :c4 :c5 :c6])
 
        [:e1 :g]
@@ -56,39 +57,39 @@
 (def factorial-iterative
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "factorial
-                                |fact-iter")]
+                        (strip-margin "factorial
+                                      |fact-iter"))]
        [:e1 (create-node "E1"
                          "n: 6")]
        [:e2 (create-node "E2"
-                         #sicp/s "product: 1
-                                 |counter: 1
-                                 |max-count: 6")]
+                         (strip-margin "product: 1
+                                       |counter: 1
+                                       |max-count: 6"))]
 
        [:e3 (create-node "E3"
-                         #sicp/s "product: 1
-                                 |counter: 2
-                                 |max-count: 6")]
+                         (strip-margin "product: 1
+                                       |counter: 2
+                                       |max-count: 6"))]
        [:e4 (create-node "E4"
-                         #sicp/s "product: 2
-                                 |counter: 3
-                                 |max-count: 6")]
+                         (strip-margin "product: 2
+                                       |counter: 3
+                                       |max-count: 6"))]
        [:e5 (create-node "E5"
-                         #sicp/s "product: 6
-                                 |counter: 4
-                                 |max-count: 6")]
+                         (strip-margin "product: 6
+                                       |counter: 4
+                                       |max-count: 6"))]
        [:e6 (create-node "E6"
-                         #sicp/s "product: 24
-                                 |counter: 5
-                                 |max-count: 6")]
+                         (strip-margin "product: 24
+                                       |counter: 5
+                                       |max-count: 6"))]
        [:e7 (create-node "E7"
-                         #sicp/s "product: 120
-                                 |counter: 6
-                                 |max-count: 6")]
+                         (strip-margin "product: 120
+                                       |counter: 6
+                                       |max-count: 6"))]
        [:e8 (create-node "E8"
-                         #sicp/s "product: 720
-                                 |counter: 7
-                                 |max-count: 6")]
+                         (strip-margin "product: 720
+                                       |counter: 7
+                                       |max-count: 6"))]
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
@@ -96,11 +97,11 @@
          :c1])
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(if (> counter max-count)
-                         |      product
-                         |      (fact-iter (* counter product)
-                         |                 (+ counter 1)
-                         |                 max-count))")]
+                 (strip-margin "(if (> counter max-count)
+                               |      product
+                               |      (fact-iter (* counter product)
+                               |                 (+ counter 1)
+                               |                 max-count))"))]
          :c2 :c3 :c4 :c5 :c6 :c7 :c8])
 
        [:e1 :g]

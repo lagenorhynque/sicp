@@ -1,7 +1,8 @@
 (ns sicp.chapter3.3-1
   (:require [dorothy.core :as d]
             [sicp.common.graph :refer [create-node]]
-            [sicp.common.list :refer :all]))
+            [sicp.common.list :refer :all]
+            [sicp.common.string :refer [strip-margin]]))
 
 ;;;; 3.3  Modeling with Mutable Data
 
@@ -520,18 +521,18 @@
 (def cons-define-x
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "cons
-                                |car
-                                |cdr
-                                |set-car!
-                                |set-cdr!
-                                |x")]
+                        (strip-margin "cons
+                                      |car
+                                      |cdr
+                                      |set-car!
+                                      |set-cdr!
+                                      |x"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 1
-                                 |y: 2
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: 1
+                                       |y: 2
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
 
        [:e1 :g]]
       d/digraph
@@ -541,25 +542,25 @@
 (def cons-define-z
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "cons
-                                |car
-                                |cdr
-                                |set-car!
-                                |set-cdr!
-                                |x
-                                |z")]
+                        (strip-margin "cons
+                                      |car
+                                      |cdr
+                                      |set-car!
+                                      |set-cdr!
+                                      |x
+                                      |z"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 1
-                                 |y: 2
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: 1
+                                       |y: 2
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e2 (create-node "E2"
-                         #sicp/s "x: E1
-                                 |y: E1
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: E1
+                                       |y: E1
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e1 :g]
        [:e2 :g]]
       d/digraph
@@ -569,32 +570,32 @@
 (def cons-cdr-z
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "cons
-                                |car
-                                |cdr
-                                |set-car!
-                                |set-cdr!
-                                |x
-                                |z")]
+                        (strip-margin "cons
+                                      |car
+                                      |cdr
+                                      |set-car!
+                                      |set-cdr!
+                                      |x
+                                      |z"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 1
-                                 |y: 2
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: 1
+                                       |y: 2
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e2 (create-node "E2"
-                         #sicp/s "x: E1
-                                 |y: E1
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: E1
+                                       |y: E1
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e3 (create-node "E3"
-                         #sicp/s "z: E2")]
+                         (strip-margin "z: E2"))]
 
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(z 'cdr)")]
+                 (strip-margin "(z 'cdr)"))]
          :c3])
 
        [:e1 :g]
@@ -610,40 +611,40 @@
 (def cons-set-car!
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "cons
-                                |car
-                                |cdr
-                                |set-car!
-                                |set-cdr!
-                                |x
-                                |z")]
+                        (strip-margin "cons
+                                      |car
+                                      |cdr
+                                      |set-car!
+                                      |set-cdr!
+                                      |x
+                                      |z"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 1
-                                 |y: 2
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: 1
+                                       |y: 2
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e2 (create-node "E2"
-                         #sicp/s "x: E1
-                                 |y: E1
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: E1
+                                       |y: E1
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e3 (create-node "E3"
-                         #sicp/s "z: E2")]
+                         (strip-margin "z: E2"))]
        [:e4 (create-node "E4"
-                         #sicp/s "z: E1
-                                 |new-value: 17")]
+                         (strip-margin "z: E1
+                                       |new-value: 17"))]
 
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(z 'cdr)")]
+                 (strip-margin "(z 'cdr)"))]
          :c3])
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "((z 'set-car!) new-value)
-                          |z")]
+                 (strip-margin "((z 'set-car!) new-value)
+                               |z"))]
          :c4])
 
        [:e1 :g]
@@ -661,32 +662,32 @@
 (def cons-car
   (-> [(d/node-attrs {:shape :record})
        [:g (create-node "global env"
-                        #sicp/s "cons
-                                |car
-                                |cdr
-                                |set-car!
-                                |set-cdr!
-                                |x
-                                |z")]
+                        (strip-margin "cons
+                                      |car
+                                      |cdr
+                                      |set-car!
+                                      |set-cdr!
+                                      |x
+                                      |z"))]
        [:e1 (create-node "E1"
-                         #sicp/s "x: 17
-                                 |y: 2
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: 17
+                                       |y: 2
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e2 (create-node "E2"
-                         #sicp/s "x: E1
-                                 |y: E1
-                                 |set-x!
-                                 |set-y!
-                                 |dispatch")]
+                         (strip-margin "x: E1
+                                       |y: E1
+                                       |set-x!
+                                       |set-y!
+                                       |dispatch"))]
        [:e5 (create-node "E5"
-                         #sicp/s "z: E1")]
+                         (strip-margin "z: E1"))]
 
        (d/node-attrs {:shape :note})
        (d/subgraph
         [[:node (create-node
-                 #sicp/s "(z 'car)")]
+                 (strip-margin "(z 'car)"))]
          :c5])
 
        [:e1 :g]
