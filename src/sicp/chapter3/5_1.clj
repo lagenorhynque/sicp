@@ -14,6 +14,12 @@
       (apply stream-map
              (cons proc (map rest argstreams)))))))
 
+(defn stream-map' [proc & argstreams]
+  (lazy-seq
+   (when (seq (first argstreams))
+     (cons (apply proc (map first argstreams))
+           (apply stream-map' proc (map rest argstreams))))))
+
 ;; Exercise 3.51
 (defn show [x]
   (println x)
